@@ -1,7 +1,7 @@
 # CityMate
 🏙CityMate is an amazing app that helps you fit in New York City!
 <h1 align="center">
-  <img src="https://github.com/CMU-DataFocusedPython-Group2/CityMate/tree/main/data/CityMateLogo.png" alt="CityMateLogo" width="600">
+  <img src="https://github.com/CMU-DataFocusedPython-Group2/CityMate/blob/main/data/CityMateLogo.png" alt="CityMateLogo" width="600">
 </h1>
 #### Group member
 Yixuan Guo
