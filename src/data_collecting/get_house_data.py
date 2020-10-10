@@ -1,7 +1,10 @@
-import numpy as np
-import requests
+import json
 import time
+import requests
+import numpy as np
+import pandas as pd
 from bs4 import BeautifulSoup
+
 
 # agent data pasted from this blog:
 # https://blog.csdn.net/qq_37597345/article/details/85319891
@@ -41,7 +44,7 @@ def get_random_agent():
         "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:16.0) Gecko/20100101 Firefox/16.0",
         "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.11 (KHTML, like Gecko) Chrome/23.0.1271.64 Safari/537.11",
         "Mozilla/5.0 (X11; U; Linux x86_64; zh-CN; rv:1.9.2.10) Gecko/20100922 Ubuntu/10.10 (maverick) Firefox/3.6.10"
-        ]
+    ]
     agent = np.random.choice(agents)
     headers = {
         "User-Agent": agent,
@@ -49,18 +52,19 @@ def get_random_agent():
     }
     return headers
 
+
 # download the html code, and return a string
 def download_html(url):
     print("url is:", url)
-    #s = re
-    #r.keep_alive = False
+    # s = re
+    # r.keep_alive = False
     headers = get_random_agent()
-    time.sleep(np.random.randint(0,1))
+    time.sleep(np.random.randint(0, 1))
     requests.adapters.DEFAULT_RETRIES = 10
     try:
-        r = requests.get(url, headers =headers, timeout=20)
+        r = requests.get(url, headers=headers, timeout=20)
         if r.status_code != 200:
-            print("Access error ",r.status_code, ":", url)
+            print("Access error ", r.status_code, ":", url)
             return ""
         html_str = str(r.text)
         r.close()
@@ -69,9 +73,10 @@ def download_html(url):
         return ""
     return html_str
 
+
 def get_urls(html_code):
     url_list = list()
-    #soup = BeautifulSoup(html_code, 'html.parser')
+    # soup = BeautifulSoup(html_code, 'html.parser')
     soup = BeautifulSoup(html_code, 'lxml')
     ul_list = soup.find_all("a", {"class": 'result-image gallery'})
     for ul in ul_list:
@@ -79,15 +84,52 @@ def get_urls(html_code):
         url_list.append(str(href))
     return url_list
 
-if __name__ == "__main__":
+
+def get_house_info(house_html):
+    if house_html == "":
+        return ["null", 0.0, 0.0, "$0", "null", "null", "null"]
+    soup = BeautifulSoup(house_html, 'lxml')
+    price = soup.find(class_="price")
+    house_info_tags = soup.find_all("script", {"type": 'application/ld+json'})
+    # print(house_info_tags[1].contents[0])
+    house_info_string = str(house_info_tags[1])
+
+    # get the json data in html
+    start = 0
+    count = 0
+    end = 0
+    for i in house_info_string:
+        if i == '{':
+            start = house_info_string.index(i)
+            break
+    for i in house_info_string:
+        count += 1
+        if i == "}":
+            end = count
+    house_json = json.loads(house_info_string[start:end])
+
+    name = str(house_json['name'])
+    longitude = float(house_json['longitude'])
+    latitude = float(house_json['latitude'])
+    price = price.string
+    streetAddress = str(house_json['address']['streetAddress'])
+    postcode = str(house_json['address']['postalCode'])
+    house_type = str(house_json['@type'])
+    house_info_list = [name, longitude, latitude, price, streetAddress, postcode, house_type]
+    return house_info_list
+
+
+def update_house_data():
     prefix = "https://newyork.craigslist.org/search/apa?housing_type=1&s="
     urls = list()
     for i in range(20):
-        stuffing = 120*i
+        stuffing = 120 * i
         target_page = prefix + str(stuffing)
         html = download_html(target_page)
         urls += get_urls(html)
-    print(urls)
+
+    # show all the urls to house page
+    # print(urls)
 
     print(len(urls))
 
@@ -96,3 +138,49 @@ if __name__ == "__main__":
             output_file.write(i)
             output_file.write("\n")
         output_file.close()
+
+    # wait until writing the url data file is done.
+    time.sleep(1)
+
+    with open("sites.txt", "r") as input_file:
+        original = input_file.readlines()
+        urls = list()
+        for i in original:
+            # get rid of the '\n'
+            urls.append(i[:-1])
+        input_file.close()
+    # print(urls)
+
+    data = {
+        'name': [],
+        'longitude': [],
+        'latitude': [],
+        'price': [],
+        'streetAddress': [],
+        'postcode': [],
+        'house_type': [],
+    }
+    df = pd.DataFrame(data)
+    count_step = 0
+    i = 0
+    for url in urls:
+        # save data checkpoints in case the program crashes.
+        # if (i != 0) & (i % 100 == 0):
+        #     file_name = "top " + str(i) + " houses.xlsx"
+        #     df.to_excel(file_name, encoding='utf-8')
+        count_step += 1
+        print(count_step)
+        house_html = download_html(url)
+        df.loc[i] = get_house_info(house_html)
+        i += 1
+
+    df.to_excel("house_info.xlsx", encoding='utf-8')
+
+    # data cleaning
+    new_df = pd.DataFrame(df)
+    new_df = new_df.loc[new_df['name'] != "null"]
+    new_df.to_excel("clean_house_data.xlsx", encoding='utf-8')
+
+
+if __name__ == "__main__":
+    update_house_data()
