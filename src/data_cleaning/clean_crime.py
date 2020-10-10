@@ -11,13 +11,13 @@ from bs4 import BeautifulSoup
 f1 = open('crime_details.txt','wt')
 f1.write(req1.text)
 f1.close()'''
-#
+
 client = Socrata("data.cityofnewyork.us", 'weom0t1xmEmSCKQihBJ7FJ4kT')
 results = client.get("pri4-ifjk", limit=2000)
 results_df = pd.DataFrame.from_records(results)
 modzcta_df = results_df.drop(['label','zcta','pop_est'],axis=1).set_index('modzcta',drop=True)
 
-# convert longitute-latitude to ZCTP code
+# function that convert longitute-latitude to ZCTP code
 def LngLat_to_ZCTP(Lng,Lat):
     p1 = Point(Lng,Lat)
     i = 0
@@ -45,7 +45,7 @@ crime_count = {}
 f2 = open('crime_details.txt','rt')
 crime_details = f2.readlines()[:-1]
 for rec in crime_details:
-    t_rec = eval(rec[1:-1])
+    t_rec = json.loads(rec[1:-1])
     crime_count[t_rec['addr_pct_cd']] = crime_count.get(t_rec['addr_pct_cd'],0)+1
 crime_count = sorted(crime_count.items(), key=lambda d: int(d[0]), reverse=False)
 
@@ -62,6 +62,7 @@ precinct_seq = []
 new_seq = []
 for row in target_police_prc:
     precinct_seq.append(row.find('a').contents[0].split(' ')[0])
+# convert the 3nd, 14th etc. to integer numbers
 for item in precinct_seq:
     if item[-2:] == 'st' or  item[-2:] == 'nd' or item[-2:] == 'st' or item[-2:] == 'th' or \
     item[-2:] == 'rd':
@@ -69,7 +70,7 @@ for item in precinct_seq:
     else:
         new_seq.append(item)
 
-# calculate the ZCTP for each police precincts
+# calculate the ZCTP for each police precincts, and organize them in a dict pct_ZCTP
 pct_ZCTP = {}
 for rec in crime_details:
     t_rec = eval(rec[1:-1])
@@ -80,20 +81,24 @@ crime_count_list = []
 for row in crime_count:
     crime_count_list.append(list(row))
 for row in crime_count_list:
+    # calculate the crime rate for each police precincts
     row[1] /= len(crime_details)/100
     row[1] = str(round(row[1],2)) + '%'
+    # construct each row
     for rec in crime_details:
-        # change to a dict
-        t_rec = eval(rec[1:-1])
+        # append the borough names
+        t_rec = json.loads(rec[1:-1])
         if(t_rec['addr_pct_cd'] == row[0]):
             row.append(t_rec.get('boro_nm','None'))
             break
     is_AddAddr = False
     for i in range(len(new_seq)):
+        # append the addresses
         if(new_seq[i] == row[0]):
             row.append(precinct_addr[i])
             is_AddAddr = True
             break
+    # append the ZCTPs
     if is_AddAddr:
         row.append(pct_ZCTP[row[0]])
     else:
