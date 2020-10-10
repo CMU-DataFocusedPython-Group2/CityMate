@@ -1,4 +1,3 @@
-# group_2_CityMate_project.py
 # this is the main program file
 
 import pandas as pd
