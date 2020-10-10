@@ -1,7 +1,6 @@
-import requests
+'''import requests
 import json
 import pandas as pd
-from clean_crime import GET_CRIME_DF
 import numpy as np
 import xlwt
 import zipfile
@@ -9,20 +8,22 @@ import io
 import time
 from sodapy import Socrata
 from shapely.geometry import Point, Polygon
-from bs4 import BeautifulSoup
+from bs4 import BeautifulSoup'''
+from clean_crime import GET_CRIME_DF
+from clean_stops import GET_STOPS_DF
 
 def UPDATE_DATA():
     CRIME_DF = GET_CRIME_DF()
     print(CRIME_DF)
-    SUBSTOPS_DF = GET_SUBSTOPS_DF()
+    SUBSTOPS_DF = GET_STOPS_DF()
     print(SUBSTOPS_DF)
-    RESTAURANT_DF = GET_RESTAURANT_DF()
+    '''RESTAURANT_DF = GET_RESTAURANT_DF()
     print(RESTAURANT_DF)
     THEATER_DF = GET_THEATRE_DF()
-    print(THEATER_DF)
+    print(THEATER_DF)'''
     return
 
-def UPDATE_HOUSE_DATA():
+'''def UPDATE_HOUSE_DATA():
     HOUSE_DF = GET_HOUSE_DF()
     print(HOUSE_DF)
     return
@@ -53,7 +54,7 @@ def LngLat_to_ZCTA(Lng,Lat):
             min_dis = dis
             name = modzcta_df.iloc[i].name
         i += 1
-    return(name)
+    return(name)'''
 
 if __name__ == "__main__":
-    UPDATE_HOUSE_DATA()
+    UPDATE_DATA()
