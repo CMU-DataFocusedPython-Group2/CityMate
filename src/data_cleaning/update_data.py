@@ -11,16 +11,18 @@ from shapely.geometry import Point, Polygon
 from bs4 import BeautifulSoup'''
 from clean_crime import GET_CRIME_DF
 from clean_stops import GET_STOPS_DF
+from clean_theater import GET_THEATER_DF
+from clean_restaurant import GET_RESTAURANT_DF
 
 def UPDATE_DATA():
-    CRIME_DF = GET_CRIME_DF()
+    '''CRIME_DF = GET_CRIME_DF()
     print(CRIME_DF)
     SUBSTOPS_DF = GET_STOPS_DF()
-    print(SUBSTOPS_DF)
-    '''RESTAURANT_DF = GET_RESTAURANT_DF()
+    print(SUBSTOPS_DF)'''
+    RESTAURANT_DF = GET_RESTAURANT_DF()
     print(RESTAURANT_DF)
-    THEATER_DF = GET_THEATRE_DF()
-    print(THEATER_DF)'''
+    THEATER_DF = GET_THEATER_DF()
+    print(THEATER_DF)
     return
 
 '''def UPDATE_HOUSE_DATA():
