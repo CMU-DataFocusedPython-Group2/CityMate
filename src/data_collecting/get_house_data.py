@@ -5,7 +5,6 @@ import numpy as np
 import pandas as pd
 from bs4 import BeautifulSoup
 
-
 # agent data pasted from this blog:
 # https://blog.csdn.net/qq_37597345/article/details/85319891
 def get_random_agent():
