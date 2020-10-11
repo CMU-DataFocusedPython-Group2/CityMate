@@ -71,7 +71,7 @@ def CLEAN_CRIMEDATA():
         else:
             new_seq.append(item)
 
-    # calculate the ZCTP for each police precincts, and organize them in a dict pct_ZCTP
+    # calculate the ZCTA for each police precincts, and organize them in a dict pct_ZCTA
     pct_ZCTA = {}
     for rec in crime_details:
         t_rec = eval(rec[1:-1])
@@ -109,7 +109,7 @@ def CLEAN_CRIMEDATA():
 
     # write to excel
     crime_count_df = pd.DataFrame(crime_count_list,
-                                  columns=['PCT_ID', 'PCT_CRIME_RATE', 'PCT_BORO_NAME', 'PCT_ADDR', 'ZCTP'])
+                                  columns=['PCT_ID', 'PCT_CRIME_RATE', 'PCT_BORO_NAME', 'PCT_ADDR', 'ZCTA'])
     return crime_count_df
 
 if __name__ == "__main__":

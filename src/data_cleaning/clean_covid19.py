@@ -11,8 +11,8 @@ results = client.get("pri4-ifjk", limit=2000)
 results_df = pd.DataFrame.from_records(results)
 modzcta_df = results_df.drop(['label','zcta','pop_est'],axis=1).set_index('modzcta',drop=True)
 
-# convert longitute-latitude to ZCTP code to match COVID-19 data
-def LngLat_to_ZCTP(Lng,Lat):
+# convert longitute-latitude to ZCTA code to match COVID-19 data
+def LngLat_to_ZCTA(Lng,Lat):
     p1 = Point(Lng,Lat)
     i = 0
     while(i<=len(modzcta_df.index)-1):

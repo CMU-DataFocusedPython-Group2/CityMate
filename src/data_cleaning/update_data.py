@@ -12,7 +12,7 @@ def UPDATE_DATA():
     CRIME_DF = CLEAN_CRIMEDATA()
     CRIME_DF.to_csv('../../data/updated_data/crime_clean.csv', index=False)
 
-    # update subway stops data
+    '''# update subway stops data
     print("Collecting subway stops data...")
     GET_STOPS_RAW()
     SUBSTOPS_DF = CLEAN_STOPSDATA()
@@ -31,7 +31,7 @@ def UPDATE_DATA():
     # update covid19 data
     print("Collecting COVID19 data...")
     COVID19_DF = GET_COVID19_DF()
-    COVID19_DF.to_csv('../../data/updated_data/covid19_clean.csv', index=False)
+    COVID19_DF.to_csv('../../data/updated_data/covid19_clean.csv', index=False)'''
 
 def UPDATE_HOUSE_DATA():
     # updata house data
