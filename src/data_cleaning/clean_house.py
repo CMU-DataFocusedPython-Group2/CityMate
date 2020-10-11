@@ -182,4 +182,4 @@ def update_house_data():
 if __name__ == "__main__":
     update_house_data()
     new_df = update_house_data()
-    new_df.to_csv("clean_house_data.csv", encoding='utf-8')
+    new_df.to_csv("../../data/clean_house_data.csv", encoding='utf-8')
