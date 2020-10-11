@@ -8,21 +8,21 @@ from clean_house import update_house_data
 def UPDATE_DATA():
     GET_CRIME_RAW()
     CRIME_DF = CLEAN_CRIMEDATA()
-    CRIME_DF.to_excel('../../data/updated_data/crime_clean.xls', sheet_name='data', index=False)
+    CRIME_DF.to_csv('../../data/updated_data/crime_clean.csv', index=False)
     GET_STOPS_RAW()
     SUBSTOPS_DF = CLEAN_STOPSDATA()
-    SUBSTOPS_DF.to_excel('../../data/updated_data/substops_clean.xls', sheet_name='data', index=False)
+    SUBSTOPS_DF.to_csv('../../data/updated_data/substops_clean.csv', index=False)
     RESTAURANT_DF = GET_RESTAURANT_DF()
-    RESTAURANT_DF.to_excel('../../data/updated_data/restaurant_clean.xls', sheet_name='data', index=False)
+    RESTAURANT_DF.to_csv('../../data/updated_data/restaurant_clean.csv', index=False)
     THEATER_DF = GET_THEATER_DF()
-    THEATER_DF.to_excel('../../data/updated_data/theater_clean.xls', sheet_name='data', index=False)
+    THEATER_DF.to_csv('../../data/updated_data/theater_clean.csv', index=False)
     '''COVID19_DF = GET_COVID19_DF()
-    COVID19_DF.to_excel('../../data/updated_data/covid19_clean.xls', sheet_name='data', index=False)'''
+    COVID19_DF.to_csv('../../data/updated_data/covid19_clean.csv', index=False)'''
     return
 
 def UPDATE_HOUSE_DATA():
     HOUSE_DF = update_house_data()
-    HOUSE_DF.to_excel('../../data/updated_data/house_clean.xls', sheet_name='data', index=False)
+    HOUSE_DF.to_csv('../../data/updated_data/house_clean.csv', index=False)
     return
 
 if __name__ == "__main__":
