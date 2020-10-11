@@ -6,8 +6,8 @@ from house_surroundings import get_univs_nearest_house
 last_update_date = "10/11/2020"
 
 # Read every cleaned database files
-houses_file = "../data/clean_house_data.csv"
-houses_df = pd.read_csv(houses_file, index_col=0)
+houses_file = "../data/clean_house_data.xlsx"
+houses_df = pd.read_excel(houses_file, index_col=0)
 
 stops_file = "../data/updated_data/substops_clean.csv"
 stops_df = pd.read_csv(stops_file)
@@ -118,7 +118,11 @@ or press N for displaying rent information.
     while True:
         try:
             house_index = int(input("\nWhich house do you want to know more about?\n" +
-                                    "Please enter the index number for more information: "))
+                                    "Enter 0 to exit\n" +
+                                    "Please enter the house index number(1-50) for more information:\n"
+                                    ))
+            if house_index == 0:
+                break
             if 1 <= house_index <= 50:
                 showDetailInfo(house_index)
             else:
