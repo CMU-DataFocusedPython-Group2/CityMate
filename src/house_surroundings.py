@@ -41,24 +41,45 @@ def get_house_df_1():
     # return a house dataframe
     return house
 
-def get_univs_nearest_house(house,univs_location):   #参数需调整,univ是list还是df希望整合的同学视情况而定
+def get_univs_nearest_house(house,univs_location,univ_chosen):  
     univs_house_dis = []
+    houses_dis_price = []
     for univ in univs_location:
         univ_house_dis = []
+        house_dis_price = []
         for house_row in house.iterrows():
             dis = get_distance_hav(float(house_row[1]['LNG']),float(house_row[1]['LAT']),float(univ[0]),float(univ[1]))+ 0.001 * random.random()
             univ_house_dis.append(dis)
+            prc = house_row[1]['price'][1:]
+            if ',' in prc:
+                prc = int(prc[0])*1000 + int(prc[2:])
+            elif '.' in prc:
+                prc = int(prc[0:-3])
+            else:
+                prc = int(prc)
+            house_dis_price.append(prc)
         d = dict(zip(univ_house_dis,range(len(univ_house_dis))))
-        univ_house_dis.sort()
+        hp = dict(zip(univ_house_dis,house_dis_price))
+        univ_house_dis.sort()        
         a = []
+        b = []
         for uhd in univ_house_dis:
             if len(a) <= 50:
                 a.append(d.get(uhd))
+                b.append(hp.get(uhd))
         univs_house_dis.append(a) 
-    
+        houses_dis_price.append(b)
+        
     univs = pd.DataFrame(np.array(univs_location),columns = ['LNG','LAT'])
     univs['house_indexs'] = univs_house_dis
     
+    # show a distribution plot of the chosen univ's surrounding houses' rates and distances
+    plt.hist(x = houses_dis_price[univ_chosen-1], bins = 20, color = 'steelblue', edgecolor = 'black')
+    plt.xlabel('Houses Monthly Rates')
+    plt.ylabel('Num of Houses')
+    plt.title('Rates Distribution by Distance from Houses to Univ')
+    plt.show()
+       
     return univs  # return a univs dataframe
 
 def get_nearest_3cinemas(house,cinema):
