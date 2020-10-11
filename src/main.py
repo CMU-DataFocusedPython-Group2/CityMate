@@ -176,10 +176,13 @@ or press N for displaying rent information.
     while True:
         try:
             ch = int(input("\nWhich house do you want to know more about?\n" +
-                           "Please enter the index number for more information: "))
+                           "Please enter the index number for more information:\n"
+                           "Enter 0 to exit"))
             if 1 <= ch <= 50:
                 house_chosen = nearest_houses_index[ch - 1]
                 showDetailInfo(house_chosen)  # row number index of house_df
+            elif ch==0:
+                break
             else:
                 print("Invalid number.")
         except:
