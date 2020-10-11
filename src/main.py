@@ -1,9 +1,11 @@
 # this is the main program file
 
 import pandas as pd
+
 from house_surroundings import get_nearest_3cinemas
 from house_surroundings import get_univs_nearest_house
 from house_surroundings import get_surrounding_restaurants
+from house_surroundings import get_univs_nearest_house, get_subway_distance
 
 last_update_date = "10/11/2020"
 
@@ -57,14 +59,12 @@ Enter 0 for quiting the detailed search.
         try:
             ch = int(input("Please enter the index number: "))
             if ch == 1:
-                # todo: print 3 Nearby Subway Stops
-                pass
-
+                print("The nearest subway is " + house_info.nearest_subway + " and is " +
+                      house_info.distance_from_subway + " kilometers far away.")
             elif ch == 2:
                 # print 10 Nearby restaurants
                 restaurants = get_surrounding_restaurants(house_info, restaurants_df)
                 print(restaurants)
-                pass
 
             elif ch == 3:
                 # print 10 Nearby Theaters
@@ -73,7 +73,8 @@ Enter 0 for quiting the detailed search.
                 pass
 
             elif ch == 4:
-                # todo: print COVID19 data in past 4 weeks
+                # print COVID19 data in past 4 weeks
+
                 pass
 
             elif ch == 5:
@@ -132,6 +133,9 @@ or press N for displaying rent information.
 
     print("\nLoading...... Please wait a few seconds!")
     all_nearest_houses_df = get_univs_nearest_house(houses_df,location_list)
+    # calculate the nearest subway and its distance
+    houses_df = get_subway_distance(houses_df, stops_df)
+    houses_df = get_surrounding_restaurants(houses_df, restaurants_df)
     nearest_houses_index = all_nearest_houses_df.iloc[uni_chosen-1].house_indexs
     count = 0
     print("index\tname\tprice\tstreetAddress\tpostcode\thouse_type")
