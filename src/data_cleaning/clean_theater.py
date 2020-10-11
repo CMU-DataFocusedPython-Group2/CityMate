@@ -28,4 +28,4 @@ def GET_THEATER_DF():
 
 if __name__ == "__main__":
     theater_df = GET_THEATER_DF()
-    theater_df.to_excel('theater_clean.xls', sheet_name='data', index=False)
+    theater_df.to_csv('../../data/updated_data/theater_clean.csv', index=False)

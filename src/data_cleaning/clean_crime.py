@@ -1,7 +1,5 @@
 import requests
-import json
 import pandas as pd
-import xlwt
 from sodapy import Socrata
 from shapely.geometry import Point, Polygon
 from bs4 import BeautifulSoup
@@ -38,12 +36,12 @@ def GET_CRIME_RAW():
     # crime data details from API
     req1 = requests.get('https://data.cityofnewyork.us/resource/qgea-i56i.json')
     # crime_count count the num of crime reports for each pct and sort it
-    f1 = open('../../data/crime_raw.txt', 'wt')
+    f1 = open('../../data/raw_data/crime_raw.txt', 'wt')
     f1.writelines(str(req1.text))
     f1.close()
 
 def CLEAN_CRIMEDATA():
-    f2 = open('../../data/crime_raw.txt')
+    f2 = open('../../data/raw_data/crime_raw.txt')
     crime_count = {}
     crime_details = f2.readlines()[:-1]
 
@@ -116,7 +114,7 @@ def CLEAN_CRIMEDATA():
 
 if __name__ == "__main__":
     crime_count_df = CLEAN_CRIMEDATA()
-    crime_count_df.to_excel('crime_clean.xls', sheet_name='data', index=False)
+    crime_count_df.to_csv('../../data/updated_data/crime_clean.csv', index=False)
 
 
 

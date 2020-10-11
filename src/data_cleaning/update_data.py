@@ -25,12 +25,12 @@ def UPDATE_DATA():
     THEATER_DF.to_csv('../../data/updated_data/theater_clean.csv', index=False)
 
     # update covid19 data
-    '''COVID19_DF = GET_COVID19_DF()
-    COVID19_DF.to_csv('../../data/updated_data/covid19_clean.csv', index=False)'''
+    COVID19_DF = GET_COVID19_DF()
+    COVID19_DF.to_csv('../../data/updated_data/covid19_clean.csv', index=False)
     return
 
 def UPDATE_HOUSE_DATA():
-    # updata house data
+    # update house data
     HOUSE_DF = update_house_data()
     HOUSE_DF.to_csv('../../data/updated_data/house_clean.csv', index=False)
     return
