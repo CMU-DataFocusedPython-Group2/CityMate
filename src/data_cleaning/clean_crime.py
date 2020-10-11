@@ -38,12 +38,12 @@ def GET_CRIME_RAW():
     # crime data details from API
     req1 = requests.get('https://data.cityofnewyork.us/resource/qgea-i56i.json')
     # crime_count count the num of crime reports for each pct and sort it
-    f1 = open('temp_files/crime_raw.txt', 'wt')
+    f1 = open('../../data/crime_raw.txt', 'wt')
     f1.writelines(str(req1.text))
     f1.close()
 
 def CLEAN_CRIMEDATA():
-    f2 = open('temp_files/crime_raw.txt')
+    f2 = open('../../data/crime_raw.txt')
     crime_count = {}
     crime_details = f2.readlines()[:-1]
 

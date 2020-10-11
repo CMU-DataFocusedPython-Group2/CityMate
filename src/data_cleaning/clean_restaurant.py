@@ -3,7 +3,7 @@ import requests
 
 def GET_RESTAURANT_DF():
     res_df = pd.DataFrame()
-    rawdata = pd.read_csv("temp_files/restaurant_point.csv").dropna(subset=['cuisine','name','addr:street','phone'])
+    rawdata = pd.read_csv("../../data/restaurant_point.csv").dropna(subset=['cuisine','name','addr:street','phone'])
     res_df['Lng'] = rawdata[rawdata.columns[0]]
     res_df['Lat'] = rawdata[rawdata.columns[1]]
     res_df['name'] = rawdata.name
