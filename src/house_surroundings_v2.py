@@ -202,7 +202,7 @@ def get_subway_distance(house,stopsdf):
         min_distance.append(imin)
         subway_names.append(subway_name)
 
-    house['distance_from_subway'] = MIN_DISTANCE
+    house['distance_from_subway'] = min_distance
     house['distance_from_subway'] *= 1000
     house['subway_names'] = subway_names
     
