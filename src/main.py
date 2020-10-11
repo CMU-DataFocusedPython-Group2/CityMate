@@ -28,7 +28,6 @@ crime_df = pd.read_csv(crime_file)
 covid19_file = "../data/updated_data/covid19_clean.csv"
 covid19_df = pd.read_csv(covid19_file)
 
-
 # longitude and latitude of different universities
 location_list = [[-76.4786, 42.4485], [-73.9572, 40.8045], [-73.999499, 40.730537],
                  [-77.6283, 43.1283], [-73.6775, 42.7300], [-76.1340, 43.0377],
@@ -47,42 +46,63 @@ def showDetailInfo(houseindex):
     house_info = houses_df.iloc[houseindex]
     print("""
 Which of the following do you want to know more about this house?
-1. 3 Nearby Subway Stops
-2. 10 Nearby Restaurants
-3. 10 Nearby Theaters
+1. Distance from nearest subway
+2. 5 Nearby Restaurants
+3. 3 Nearby Theaters
 4. COVID19 data in past 4 weeks
-5. Crime Report in past x years
+5. Crime Report in past 5 years
 Enter 0 for quiting the detailed search.
 """)
 
     while True:
         try:
-            ch = int(input("Please enter the index number: "))
+            ch = int(input("\nPlease enter the index number: "))
             if ch == 1:
                 print("The nearest subway is " + house_info.nearest_subway + " and is " +
                       house_info.distance_from_subway + " kilometers far away.")
             elif ch == 2:
-                # print 10 Nearby restaurants
-                restaurants = get_surrounding_restaurants(house_info, restaurants_df)
-                print(restaurants)
+                # print 5 Nearby restaurants
+                print("The most popular cuisine is: ", house_info.most_common_cuisine)
+                print("Number restaurant within 500m: ", house_info.num_rests_within_500m)
+                print("The 5 nearest restaurants are:\n")
+                print("name\tcuisine\tstreet\tphone")
+                for i in house_info.nearest_5rests_index:
+                    res = restaurants_df.iloc[i]
+                    print(res.name +"\t"+res.cuisine+"\t"+res.street+"\t"+res.phone)
 
             elif ch == 3:
-                # print 10 Nearby Theaters
-                theaters = get_nearest_3cinemas(house_info, theaters_df)
-                print(theaters)
-                pass
+                # print 3 Nearby Theaters
+                print("The 3 nearest theaters are:\n")
+                print("name\ttel\turl\taddress\tzip")
+                for i in house_info.nearest_3theaters_index:
+                    thetr = theaters_df.iloc[i]
+                    print(thetr.THR_NAME+"\t"+thetr.THR_TEL+"\t"+thetr.THR_URL+"\t"+
+                          thetr.THR_ADDRESS+"\t"+thetr.THR_ZIP)
 
             elif ch == 4:
                 # print COVID19 data in past 4 weeks
-
-                pass
+                ZCTA = house_info.ZCTA
+                covid_data = covid19_df[covid19_df['ZCTA'] == ZCTA].iloc[0]
+                print("In the past four weeks, the COVID 19 data of here\n" + covid_data.NEIGHBORHOOD_NAME + "is: ")
+                print("Total case count: ", covid_data.COVID_CASE_COUNT_4WEEK)
+                print("Total case rate: ", covid_data.COVID_CASE_RATE_4WEEK)
+                print("Total death count: ", covid_data.COVID_DEATH_COUNT_4WEEK)
+                print("Total death rate: ", covid_data.COVID_DEATH_RATE_4WEEK)
+                print("Number of people tested: ", covid_data.NUM_PEOP_TEST_4WEEK)
+                print("Tested positive rate: ", covid_data.PERCENT_POSITIVE_4WEEK)
+                print("Case counts change: ", covid_data.CASE_COUNT_CHANGE_4WEEK)
 
             elif ch == 5:
-                # print Crime Report in past x years
-                pass
+                # print Crime Report in past 5 years
+                ZCTA = house_info.ZCTA
+                crime_data = crime_df[crime_df['ZCTA'] == ZCTA].iloc[0]
+                print("The house is in Precinct No.", crime_data.PCT_ID)
+                print("Crime rate of the precinct: ", crime_data.PCT_CRIME_RATE)
+                print("Borough of the precinct: ", crime_data.PCT_BORO_NAME)
+                print("Address of the precinct: ", crime_data.PCT_ADDR)
 
             elif ch == 0:
-                pass # quit the detailed searching
+                pass  # quit the detailed searching
                 break
 
             else:
@@ -106,7 +126,7 @@ if __name__ == '__main__':
         try:
             uni = int(input("\nPlease enter the index number of the university: "))
             if 1 <= uni <= 15:
-                print("You would like to rent near " + universities[uni-1])
+                print("You would like to rent near " + universities[uni - 1])
                 uni_chosen = uni
                 break
         except():
@@ -132,11 +152,9 @@ or press N for displaying rent information.
             pass
 
     print("\nLoading...... Please wait a few seconds!")
-    all_nearest_houses_df = get_univs_nearest_house(houses_df,location_list)
+    all_nearest_houses_df = get_univs_nearest_house(houses_df, location_list)
     # calculate the nearest subway and its distance
-    houses_df = get_subway_distance(houses_df, stops_df)
-    houses_df = get_surrounding_restaurants(houses_df, restaurants_df)
-    nearest_houses_index = all_nearest_houses_df.iloc[uni_chosen-1].house_indexs
+    nearest_houses_index = all_nearest_houses_df.iloc[uni_chosen - 1].house_indexs
     count = 0
     print("index\tname\tprice\tstreetAddress\tpostcode\thouse_type")
     print("\nHere is information about 50 nearby houses for rent.")
@@ -151,8 +169,8 @@ or press N for displaying rent information.
             ch = int(input("\nWhich house do you want to know more about?\n" +
                            "Please enter the index number for more information: "))
             if 1 <= ch <= 50:
-                house_chosen = nearest_houses_index[ch-1]
-                showDetailInfo(house_chosen) # row number index of house_df
+                house_chosen = nearest_houses_index[ch - 1]
+                showDetailInfo(house_chosen)  # row number index of house_df
             else:
                 continue
         except():
