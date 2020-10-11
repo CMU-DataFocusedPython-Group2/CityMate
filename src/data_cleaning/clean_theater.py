@@ -11,7 +11,6 @@ def GET_THEATER_DF():
     list_of_lists = []
     for line in theater_csv[:-1]:
         row = line.split(',')
-        print(row)
         if(row[6] == "New York"):
             list_of_lists.append(row)
 

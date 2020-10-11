@@ -34,15 +34,22 @@ def LngLat_to_ZCTA(Lng,Lat):
         i += 1
     return(name)
 
-def GET_CRIME_DF():
+def GET_CRIME_RAW():
     # crime data details from API
     req1 = requests.get('https://data.cityofnewyork.us/resource/qgea-i56i.json')
     # crime_count count the num of crime reports for each pct and sort it
+    f1 = open('temp_files/crime_raw.txt', 'wt')
+    f1.writelines(str(req1.text))
+    f1.close()
+
+def CLEAN_CRIMEDATA():
+    f2 = open('temp_files/crime_raw.txt')
     crime_count = {}
-    crime_details = json.loads(req1.text)
+    crime_details = f2.readlines()[:-1]
 
     for rec in crime_details:
-        crime_count[rec['addr_pct_cd']] = crime_count.get(rec['addr_pct_cd'], 0) + 1
+        t_rec = eval(rec[1:-1])
+        crime_count[t_rec['addr_pct_cd']] = crime_count.get(t_rec['addr_pct_cd'], 0) + 1
     crime_count = sorted(crime_count.items(), key=lambda d: int(d[0]), reverse=False)
 
     # use beautiful soup web scraping to find the addr of each police precinct
@@ -69,7 +76,9 @@ def GET_CRIME_DF():
     # calculate the ZCTP for each police precincts, and organize them in a dict pct_ZCTP
     pct_ZCTA = {}
     for rec in crime_details:
-        pct_ZCTA[rec['addr_pct_cd']] = LngLat_to_ZCTA(float(rec.get('longitude', 0)), float(rec.get('latitude', 0)))
+        t_rec = eval(rec[1:-1])
+        pct_ZCTA[t_rec['addr_pct_cd']] = LngLat_to_ZCTA(float(t_rec.get('longitude', 0)),
+                                                        float(t_rec.get('latitude', 0)))
 
     # convert crime_count to a list of lists, key!!!
     crime_count_list = []
@@ -82,8 +91,9 @@ def GET_CRIME_DF():
         # construct each row
         for rec in crime_details:
             # append the borough names
-            if (rec['addr_pct_cd'] == row[0]):
-                row.append(rec.get('boro_nm', 'None'))
+            t_rec = eval(rec[1:-1])
+            if (t_rec['addr_pct_cd'] == row[0]):
+                row.append(t_rec.get('boro_nm', 'None'))
                 break
         is_AddAddr = False
         for i in range(len(new_seq)):
@@ -105,7 +115,7 @@ def GET_CRIME_DF():
     return crime_count_df
 
 if __name__ == "__main__":
-    crime_count_df = GET_CRIME_DF()
+    crime_count_df = CLEAN_CRIMEDATA()
     crime_count_df.to_excel('crime_clean.xls', sheet_name='data', index=False)
 
 
