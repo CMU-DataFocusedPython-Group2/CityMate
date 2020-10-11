@@ -42,12 +42,7 @@ def get_house_df():
     # return a house dataframe
     return house
 
-def get_univs_nearest_house(house,univs_location1):   #参数需调整,univ是list还是df希望整合的同学视情况而定
-    univs_location = [[-76.4786,42.4485], [-73.9572,40.8045], [-73.999499,40.730537],
-                 [-77.6283,43.1283], [-73.6775,42.7300], [-76.1340,43.0377],
-                 [-73.8840,40.8565], [-73.9297,40.8503], [-75.9699,42.0893],
-                 [-73.9898,40.7345], [-74.9991,44.6635], [-73.6003, 40.7088],
-                 [-73.7912,40.7010], [-74.0257,40.7448], [-73.7956,40.7219]]
+def get_univs_nearest_house(house,univs_location):
     univs_house_dis = []
     for univ in univs_location:
         univ_house_dis = []
@@ -63,7 +58,7 @@ def get_univs_nearest_house(house,univs_location1):   #参数需调整,univ是li
         univs_house_dis.append(a) 
     
     univs = pd.DataFrame(np.array(univs_location),columns = ['LNG','LAT'])
-    univs['univs_house_dis'] = univs_house_dis
+    univs['house_indexs'] = univs_house_dis
     
     return univs  # return a univs dataframe
 
