@@ -181,8 +181,6 @@ def update_house_data():
     new_df = new_df.loc[new_df['name'] != "null"]
     return new_df
 
-
-
 if __name__ == "__main__":
     update_house_data()
     new_df = update_house_data()
