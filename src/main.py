@@ -1,7 +1,9 @@
 # this is the main program file
 
 import pandas as pd
+from house_surroundings import get_nearest_3cinemas
 from house_surroundings import get_univs_nearest_house
+from house_surroundings import get_surrounding_restaurants
 
 last_update_date = "10/11/2020"
 
@@ -40,7 +42,7 @@ universities = ["Cornell University", "Columbia University", "New York Universit
 
 
 def showDetailInfo(houseindex):
-
+    house_info = houses_df.iloc[houseindex]
     print("""
 Which of the following do you want to know more about this house?
 1. 3 Nearby Subway Stops
@@ -55,18 +57,33 @@ Enter 0 for quiting the detailed search.
         try:
             ch = int(input("Please enter the index number: "))
             if ch == 1:
+                # todo: print 3 Nearby Subway Stops
                 pass
+
             elif ch == 2:
+                # print 10 Nearby restaurants
+                restaurants = get_surrounding_restaurants(house_info, restaurants_df)
+                print(restaurants)
                 pass
+
             elif ch == 3:
+                # print 10 Nearby Theaters
+                theaters = get_nearest_3cinemas(house_info, theaters_df)
+                print(theaters)
                 pass
+
             elif ch == 4:
+                # todo: print COVID19 data in past 4 weeks
                 pass
+
             elif ch == 5:
+                # print Crime Report in past x years
                 pass
+
             elif ch == 0:
                 pass # quit the detailed searching
                 break
+
             else:
                 pass
         except():
