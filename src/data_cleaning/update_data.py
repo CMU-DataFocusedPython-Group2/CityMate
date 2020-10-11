@@ -51,7 +51,7 @@ def GET_HOUSE_DF():
     theaters_file = "../../data/updated_data/theater_clean.csv"
     cinema_df = pd.read_csv(theaters_file)
 
-    houses_df = get_house_df()
+    houses_df = get_house_df_1()
     houses_df = get_nearest_3cinemas(houses_df, cinema_df)
     houses_df = get_surrounding_restaurants(houses_df, rest_df)
     houses_df = get_subway_distance(houses_df, stops_df)

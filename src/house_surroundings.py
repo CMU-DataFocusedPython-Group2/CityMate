@@ -34,7 +34,6 @@ def get_distance_hav(lat0, lng0, lat1, lng1):
  
     return distance
 
-
 def get_house_df_1():
     house = pd.read_excel('../data/clean_house_data.xlsx')
     house.columns = ['house_id', 'house_name', 'LNG', 'LAT', 'price', 'streetAddress', 'postcode', 'house_type']
