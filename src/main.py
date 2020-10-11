@@ -161,7 +161,7 @@ or press N for displaying rent information.
             pass
 
     print("\nLoading...... Please wait a few seconds!")
-    all_nearest_houses_df = get_univs_nearest_house(houses_df, location_list)
+    all_nearest_houses_df = get_univs_nearest_house(houses_df, location_list, uni_chosen)
     nearest_houses_index = all_nearest_houses_df.iloc[uni_chosen - 1].house_indexs[0:50]
 
     count = 0
