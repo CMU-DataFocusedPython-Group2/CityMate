@@ -24,6 +24,7 @@ crime_df = pd.read_csv(crime_file)
 covid19_file = "../data/updated_data/covid19_clean.csv"
 covid19_df = pd.read_csv(covid19_file)
 
+
 # longitude and latitude of different universities
 location_list = [[-76.4786, 42.4485], [-73.9572, 40.8045], [-73.999499, 40.730537],
                  [-77.6283, 43.1283], [-73.6775, 42.7300], [-76.1340, 43.0377],
@@ -31,8 +32,15 @@ location_list = [[-76.4786, 42.4485], [-73.9572, 40.8045], [-73.999499, 40.73053
                  [-73.9898, 40.7345], [-74.9991, 44.6635], [-73.6003, 40.7088],
                  [-73.7912, 40.7010], [-74.0257, 40.7448], [-73.7956, 40.7219]]
 
+universities = ["Cornell University", "Columbia University", "New York University",
+                "University of Rochester", "Rensselaer Polytechnic Institute", "Syracuse University",
+                "Fordham University", "Yeshiva University", "Binghamton University",
+                "The New School", "Clarkson University", "Hofstra University",
+                "City University of New York", "Stevens Institute of Technology", "St.John's University"]
+
 
 def showDetailInfo(houseindex):
+
     print("""
 Which of the following do you want to know more about this house?
 1. 3 Nearby Subway Stops
@@ -57,11 +65,11 @@ Enter 0 for quiting the detailed search.
             elif ch == 5:
                 pass
             elif ch == 0:
-                pass  # quit the detailed searching
+                pass # quit the detailed searching
                 break
             else:
                 pass
-        except:
+        except():
             pass
 
 
@@ -71,11 +79,6 @@ if __name__ == '__main__':
     print("Hi, Welcome to CityMate's HouseRent Service!\n")
     print("Please specify your University, where do you want to live nearby?")
 
-    universities = ["Cornell University", "Columbia University", "New York University",
-                    "University of Rochester", "Rensselaer Polytechnic Institute", "Syracuse University",
-                    "Fordham University", "Yeshiva University", "Binghamton University",
-                    "The New School", "Clarkson University", "Hofstra University",
-                    "City University of New York", "Stevens Institute of Technology", "St.John's University"]
     count = 0
     for university in universities:
         count += 1
@@ -85,10 +88,10 @@ if __name__ == '__main__':
         try:
             uni = int(input("\nPlease enter the index number of the university: "))
             if 1 <= uni <= 15:
-                print("You would like to rent near " + universities[uni - 1])
+                print("You would like to rent near " + universities[uni-1])
                 uni_chosen = uni
                 break
-        except:
+        except():
             pass
 
     print("\n......Now we are preparing data for you......\nWe have already updated data on " + last_update_date +
@@ -110,24 +113,28 @@ or press N for displaying rent information.
         else:
             pass
 
+    print("\nLoading...... Please wait a few seconds!")
+    all_nearest_houses_df = get_univs_nearest_house(houses_df,location_list)
+    nearest_houses_index = all_nearest_houses_df.iloc[uni_chosen-1].house_indexs
+    count = 0
+    print("index\tname\tprice\tstreetAddress\tpostcode\thouse_type")
     print("\nHere is information about 50 nearby houses for rent.")
-    all_nearest_houses_df = get_univs_nearest_house(houses_df, location_list)
-    nearest_houses_index = all_nearest_houses_df.iloc[uni_chosen - 1].house_indexs
-    # for index in nearest_houses_index:
-    #     print(houses_df.iloc[index])
+    for index in nearest_houses_index:
+        count += 1
+        info = houses_df.iloc[index]
+        print(str(count) + "\t" + str(info.name) + "\t" + str(info.price) + "\t" + str(info.streetAddress) +
+              "\t" + str(info.postcode) + "\t" + str(info.house_type))
+
     while True:
         try:
-            house_index = int(input("\nWhich house do you want to know more about?\n" +
-                                    "Enter 0 to exit\n" +
-                                    "Please enter the house index number(1-50) for more information:\n"
-                                    ))
-            if house_index == 0:
-                break
-            if 1 <= house_index <= 50:
-                showDetailInfo(house_index)
+            ch = int(input("\nWhich house do you want to know more about?\n" +
+                           "Please enter the index number for more information: "))
+            if 1 <= ch <= 50:
+                house_chosen = nearest_houses_index[ch-1]
+                showDetailInfo(house_chosen) # row number index of house_df
             else:
                 continue
-        except:
+        except():
             pass
 
     print("Thank you for using our CityMate service, if you find our service useful, please recommend it to others!:)")
