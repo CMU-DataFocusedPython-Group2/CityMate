@@ -36,13 +36,18 @@ def get_distance_hav(lat0, lng0, lat1, lng1):
 
 def get_house_df():
     
-    house = pd.read_excel('clean_house_data.xlsx')
+    hosue = pd.read_csv("../data/updated_data/house_clean.csv",header=0) 
     house.columns = ['house_id','house_name','LNG','LAT','price','streetAddress','postcode','house_type']
     house.drop('house_id',axis = 1, inplace = True)
     # return a house dataframe
     return house
 
-def get_univs_nearest_house(house,univs_location):
+def get_univs_nearest_house(house,univs_location1):   #参数需调整,univ是list还是df希望整合的同学视情况而定
+    univs_location = [[-76.4786,42.4485], [-73.9572,40.8045], [-73.999499,40.730537],
+                 [-77.6283,43.1283], [-73.6775,42.7300], [-76.1340,43.0377],
+                 [-73.8840,40.8565], [-73.9297,40.8503], [-75.9699,42.0893],
+                 [-73.9898,40.7345], [-74.9991,44.6635], [-73.6003, 40.7088],
+                 [-73.7912,40.7010], [-74.0257,40.7448], [-73.7956,40.7219]]
     univs_house_dis = []
     for univ in univs_location:
         univ_house_dis = []
@@ -58,7 +63,7 @@ def get_univs_nearest_house(house,univs_location):
         univs_house_dis.append(a) 
     
     univs = pd.DataFrame(np.array(univs_location),columns = ['LNG','LAT'])
-    univs['house_indexs'] = univs_house_dis
+    univs['univs_house_dis'] = univs_house_dis
     
     return univs  # return a univs dataframe
 
@@ -66,8 +71,8 @@ def get_nearest_3cinemas(house,cinema_df):# 最好是能传一个有index的cine
     # calculate the nearest 3 cinemas for each house
     nearest3cinemas = []
     
-    cinema = pd.read_excel('cinema_clean.xls')          #参数修正后可删
-    cinema['index'] = [i for i in range(len(cinema))]   #参数修正后可删
+    cinema = pd.read_csv("../data/updated_data/cinema_clean.csv",header=0)        #参数修正后可删
+    cinema['index'] = [i for i in range(len(cinema))]                             #参数修正后可删
     
     for house_row in house.iterrows():        
         nearest_index = [0,0,0]  # initialize a nearest_index to store the nearest 3 cinemas' index
@@ -104,7 +109,7 @@ def get_surrounding_restaurants(house,rest_df):#参数要求同get_nearest_3cine
     
     # calculate the nearest 5 restaurants,restaurants number within 500m and the most common cuisine within 500m for each house
     
-    rest = pd.read_csv("Restaurant_clean.csv",header=0)  #参数修正后可删
+    rest = pd.read_csv("../data/updated_data/restaurant_clean.csv",header=0)  #参数修正后可删
     rest['index'] = [i for i in range(len(rest))]        #参数修正后可删
 
     common_cuisines = []          # store common cuisines for each house
@@ -177,6 +182,29 @@ def get_surrounding_restaurants(house,rest_df):#参数要求同get_nearest_3cine
     house['most_common_cuisine'] = most_common_cuisine
     house['num_rests_within_500m'] = num_rests_within_500m
     house['nearest_5rests_index'] = nearest5rests
+    
+    return house
+
+
+def get_subway_distance(house,stopsdf):
+    
+    stops = pd.read_csv("../data/updated_data/stops_clean.csv",header=0)
+    min_distance = []
+    subway_names = []
+    for house_row in house.iterrows():
+        imin = 999999
+        subway_name = ""
+        for stops_row in stops.iterrows():
+            hts_dis = get_distance_hav(float(house_row[1][1]),float(house_row[1][2]),float(stops_row[1][3]),float(stops_row[1][2]))
+            if hts_dis < imin:
+                imin = hts.dis
+                subway_name = stops_row[1][1]
+        min_distance.append(imin)
+        subway_names.append(subway_name)
+
+    house['distance_from_subway'] = min_distance
+    house['distance_from_subway'] *= 1000
+    house['subway_names'] = subway_names
     
     return house
 
