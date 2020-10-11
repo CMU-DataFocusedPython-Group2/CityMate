@@ -60,3 +60,7 @@ def GET_COVID19_DF():
     COVID_DATA.columns = ['ZCTA','NEIGHBORHOOD_NAME','COVID_CASE_COUNT_4WEEK','COVID_CASE_RATE_4WEEK','COVID_DEATH_COUNT_4WEEK',
                          'COVID_DEATH_RATE_4WEEK','NUM_PEOP_TEST_4WEEK','PERCENT_POSITIVE_4WEEK','CASE_COUNT_CHANGE_4WEEK']
     return COVID_DATA
+
+if __name__ == "__main__":
+    COVID_DATA = GET_COVID19_DF()
+    COVID_DATA.to_csv('../../data/updated_data/covid19_clean.csv', index=False)

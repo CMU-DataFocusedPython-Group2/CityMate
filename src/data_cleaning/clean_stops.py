@@ -10,10 +10,10 @@ import pandas as pd
 def GET_STOPS_RAW():
     r = requests.get('http://web.mta.info/developers/data/nyct/subway/google_transit.zip')
     z = zipfile.ZipFile(io.BytesIO(r.content))
-    z.extractall(path = '../../data/')
+    z.extractall(path = '../../data/raw_data/')
 
 def CLEAN_STOPSDATA():
-    path = '../../data/stops.txt'
+    path = '../../data/raw_data/stops.txt'
     with open(path) as f:
         lists = [i[:-1].split(',') for i in f.readlines()]
 
@@ -32,7 +32,6 @@ def CLEAN_STOPSDATA():
     return stops
 
 if __name__ == "__main__":
-    outputpath='clean_stops_data.csv'
-    stops = CLEAN_STOPSDATA()
-    stops.to_csv(outputpath,sep=',',index=False,header=True)
+    stops_df = CLEAN_STOPSDATA()
+    stops_df.to_csv('../../data/updated_data/substops_clean.csv', index=False)
 
