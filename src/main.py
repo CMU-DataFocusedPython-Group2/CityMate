@@ -1,17 +1,13 @@
 # this is the main program file
 
 import pandas as pd
-
-from house_surroundings import get_nearest_3cinemas
 from house_surroundings import get_univs_nearest_house
-from house_surroundings import get_surrounding_restaurants
-from house_surroundings import get_univs_nearest_house, get_subway_distance
 
 last_update_date = "10/11/2020"
 
 # Read every cleaned database files
-houses_file = "../data/clean_house_data.xlsx"
-houses_df = pd.read_excel(houses_file, index_col=0)
+houses_file = "../data/house_merged.csv"
+houses_df = pd.read_csv(houses_file)
 
 stops_file = "../data/updated_data/substops_clean.csv"
 stops_df = pd.read_csv(stops_file)
