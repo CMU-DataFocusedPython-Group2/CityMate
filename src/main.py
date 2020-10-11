@@ -62,7 +62,7 @@ Enter 0 for quiting the detailed search.
 
     while True:
         try:
-            ch = int(input("\nPlease enter the index number:\nPress 0 for quit\n"))
+            ch = int(input("\nPlease enter the choice number:\nPress 0 for quit\n"))
             if ch == 1:
                 print("The nearest subway is " + house_info.nearest_subway + " and is " +
                       house_info.distance_from_subway + " kilometers far away.")
@@ -114,7 +114,7 @@ Enter 0 for quiting the detailed search.
             else:
                 pass
         except():
-            pass
+            print("Invalid number.")
 
 
 if __name__ == '__main__':
@@ -130,11 +130,13 @@ if __name__ == '__main__':
 
     while True:
         try:
-            uni = int(input("\nPlease enter the index number of the university: "))
+            uni = int(input("\nPlease enter the choice number of the university: "))
             if 1 <= uni <= 15:
                 print("You would like to rent near " + universities[uni - 1])
                 uni_chosen = uni
                 break
+            else:
+                print("Invalid number.")
         except():
             pass
 
@@ -150,8 +152,8 @@ or press N for displaying rent information.
     while True:
         update_or_not = input("Please enter your input: ")
         if update_or_not == "Y" or update_or_not == "y":
-            # call the update function
-            pass
+            print("In this program, this will take too long, please press n")
+            print("Update data manually by running update_data.py")
         elif update_or_not == "N" or update_or_not == "n":
             break
         else:
@@ -178,7 +180,7 @@ or press N for displaying rent information.
                 house_chosen = nearest_houses_index[ch - 1]
                 showDetailInfo(house_chosen)  # row number index of house_df
             else:
-                continue
+                print("Invalid number.")
         except():
             pass
 
