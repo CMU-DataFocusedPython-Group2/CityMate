@@ -17,20 +17,31 @@
 
     ├──README.md
     ├──data
+    |    ├──raw_data
+    |    |    ├──crime_raw.txt
+    |    |    ├──restaurant_raw.csv
+    |    |    ├──stops.txt
+    |    |    └──theater_raw.csv
+    |    ├──updated_data
+    |    |    ├──covid19_clean.csv
+    |    |    ├──crime_clean.csv
+    |    |    ├──house_merged.csv
+    |    |    ├──restaurant_clean.csv
+    |    |    ├──substops_clean.csv
+    |    |    └──theater_clean.csv
+    |    |
     |    ├──CityMateLogo.png
-    |    ├──restaurant_point.csv
-    |    ├──house_info.xlsx
-    |    ├──restaurant_point
+    |    ├──clean_house_data.xlsx
     |    └──sites.txt
+    |    
     └──src
-    |    ├──data_cleaning
-    |    |    ├──clean_crime.py
-    |    |    ├──clean_restaurant.py
-    |    |    ├──clean_stops.py
-    |    |    └──clean_theater.py
-    |    └──data_collecting
-    |         ├──get_house_data.py
-    |         └──get_subway_stops.py
-    └──tools
-         ├──get_distance_hav.py
+         ├──data_cleaning
+         |    ├──clean_crime.py
+         |    ├──clean_restaurant.py
+         |    ├──clean_stops.py
+         |    └──clean_theater.py
+         |
+         └──data_collecting
+              ├──get_house_data.py
+              └──get_subway_stops.py
 
