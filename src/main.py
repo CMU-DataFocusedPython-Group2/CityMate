@@ -1,7 +1,12 @@
 # this is the main program file
 
 import pandas as pd
+from house_surroundings import get_house_df
+from house_surroundings import get_distance_hav
+from house_surroundings import get_nearest_3cinemas
 from house_surroundings import get_univs_nearest_house
+from house_surroundings import get_surrounding_restaurants
+
 
 last_update_date = "10/11/2020"
 
@@ -42,19 +47,32 @@ Which of the following do you want to know more about this house?
 5. Crime Report in past x years
 Enter 0 for quiting the detailed search.
 """)
+    house_chosen = houses_df.loc[houseindex]
 
     while True:
         try:
             ch = int(input("Please enter the index number: "))
             if ch == 1:
+                # todo:print 3 Nearby Subway Stops
+
                 pass
             elif ch == 2:
+                # print 10 Nearby Restaurants
+                restaurants = get_surrounding_restaurants(house_chosen, restaurants_df)
+                print(len(restaurants), restaurants)
                 pass
             elif ch == 3:
+                # print 10 Nearby Theaters
+                theaters = get_nearest_3cinemas(house_chosen, theaters_df)
+                print(len(theaters), theaters)
                 pass
             elif ch == 4:
+                # todo: print COVID19 data in past 4 weeks
+
                 pass
             elif ch == 5:
+                # todo: print Crime Report in past x years
+
                 pass
             elif ch == 0:
                 pass  # quit the detailed searching
@@ -123,7 +141,7 @@ or press N for displaying rent information.
                                     ))
             if house_index == 0:
                 break
-            if 1 <= house_index <= 50:
+            elif 1 <= house_index <= 50:
                 showDetailInfo(house_index)
             else:
                 continue
