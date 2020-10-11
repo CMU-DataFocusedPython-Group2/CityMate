@@ -24,7 +24,6 @@ crime_df = pd.read_csv(crime_file)
 covid19_file = "../data/updated_data/covid19_clean.csv"
 covid19_df = pd.read_csv(covid19_file)
 
-
 # longitude and latitude of different universities
 location_list = [[-76.4786, 42.4485], [-73.9572, 40.8045], [-73.999499, 40.730537],
                  [-77.6283, 43.1283], [-73.6775, 42.7300], [-76.1340, 43.0377],
@@ -44,7 +43,7 @@ Which of the following do you want to know more about this house?
 Enter 0 for quiting the detailed search.
 """)
 
-    while(True):
+    while True:
         try:
             ch = int(input("Please enter the index number: "))
             if ch == 1:
@@ -58,7 +57,7 @@ Enter 0 for quiting the detailed search.
             elif ch == 5:
                 pass
             elif ch == 0:
-                pass # quit the detailed searching
+                pass  # quit the detailed searching
                 break
             else:
                 pass
@@ -73,20 +72,20 @@ if __name__ == '__main__':
     print("Please specify your University, where do you want to live nearby?")
 
     universities = ["Cornell University", "Columbia University", "New York University",
-                    "University of Rochester","Rensselaer Polytechnic Institute","Syracuse University",
-                    "Fordham University","Yeshiva University","Binghamton University",
-                    "The New School","Clarkson University","Hofstra University",
-                    "City University of New York", "Stevens Institute of Technology","St.John's University"]
+                    "University of Rochester", "Rensselaer Polytechnic Institute", "Syracuse University",
+                    "Fordham University", "Yeshiva University", "Binghamton University",
+                    "The New School", "Clarkson University", "Hofstra University",
+                    "City University of New York", "Stevens Institute of Technology", "St.John's University"]
     count = 0
     for university in universities:
         count += 1
         print(str(count) + ". " + university)
 
-    while(True):
+    while True:
         try:
             uni = int(input("\nPlease enter the index number of the university: "))
-            if 1<=uni<=15:
-                print("You would like to rent near " + universities[uni-1])
+            if 1 <= uni <= 15:
+                print("You would like to rent near " + universities[uni - 1])
                 uni_chosen = uni
                 break
         except:
@@ -101,9 +100,9 @@ If you want to update local data, press Y,
 or press N for displaying rent information.
  """)
 
-    while(True):
+    while True:
         update_or_not = input("Please enter your input: ")
-        if update_or_not=="Y" or update_or_not =="y":
+        if update_or_not == "Y" or update_or_not == "y":
             # call the update function
             pass
         elif update_or_not == "N" or update_or_not == "n":
@@ -112,16 +111,16 @@ or press N for displaying rent information.
             pass
 
     print("\nHere is information about 50 nearby houses for rent.")
-    all_nearest_houses_df = get_univs_nearest_house(houses_df,location_list)
-    nearest_houses_index = all_nearest_houses_df.iloc[uni_chosen-1].house_indexs
+    all_nearest_houses_df = get_univs_nearest_house(houses_df, location_list)
+    nearest_houses_index = all_nearest_houses_df.iloc[uni_chosen - 1].house_indexs
     # for index in nearest_houses_index:
     #     print(houses_df.iloc[index])
-    while(True):
+    while True:
         try:
-            ch = int(input("\nWhich house do you want to know more about?\n" +
-                           "Please enter the index number for more information: "))
-            if 1<=ch<=50:
-                showDetailInfo(ch)
+            house_index = int(input("\nWhich house do you want to know more about?\n" +
+                                    "Please enter the index number for more information: "))
+            if 1 <= house_index <= 50:
+                showDetailInfo(house_index)
             else:
                 continue
         except:
