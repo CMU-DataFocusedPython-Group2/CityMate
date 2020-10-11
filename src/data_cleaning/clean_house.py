@@ -133,7 +133,7 @@ def update_house_data():
 
     print(len(urls))
 
-    with open("sites.txt", "w") as output_file:
+    with open("../../data/sites.txt", "w") as output_file:
         for i in urls:
             output_file.write(i)
             output_file.write("\n")
@@ -142,7 +142,7 @@ def update_house_data():
     # wait until writing the url data file is done.
     time.sleep(1)
 
-    with open("sites.txt", "r") as input_file:
+    with open("../../data/sites.txt", "r") as input_file:
         original = input_file.readlines()
         urls = list()
         for i in original:
@@ -174,9 +174,7 @@ def update_house_data():
         df.loc[i] = get_house_info(house_html)
         i += 1
 
-    df.to_excel("house_info.xlsx", encoding='utf-8')
-
-    # data cleaning
+    # data cleaning, remove the empty lines
     new_df = pd.DataFrame(df)
     new_df = new_df.loc[new_df['name'] != "null"]
     return new_df
@@ -184,4 +182,4 @@ def update_house_data():
 if __name__ == "__main__":
     update_house_data()
     new_df = update_house_data()
-    new_df.to_excel("clean_house_data.xlsx", encoding='utf-8')
+    new_df.to_csv("../../data/clean_house_data.csv", encoding='utf-8')
