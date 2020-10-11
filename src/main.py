@@ -44,6 +44,12 @@ universities = ["Cornell University", "Columbia University", "New York Universit
 
 def showDetailInfo(houseindex):
     house_info = houses_df.iloc[houseindex]
+    print("house description: ", house_info['name'])
+    print("month price: ", house_info.price)
+    print("street address: ", house_info.streetAddress)
+    print("house type: ", house_info.house_type)
+    print("postcode: ", house_info.postcode)
+
     print("""
 Which of the following do you want to know more about this house?
 1. Distance from nearest subway
@@ -56,7 +62,7 @@ Enter 0 for quiting the detailed search.
 
     while True:
         try:
-            ch = int(input("\nPlease enter the index number: "))
+            ch = int(input("\nPlease enter the index number:\nPress 0 for quit\n"))
             if ch == 1:
                 print("The nearest subway is " + house_info.nearest_subway + " and is " +
                       house_info.distance_from_subway + " kilometers far away.")
@@ -102,7 +108,7 @@ Enter 0 for quiting the detailed search.
                 print("Address of the precinct: ", crime_data.PCT_ADDR)
 
             elif ch == 0:
-                pass  # quit the detailed searching
+                # quit the detailed searching
                 break
 
             else:
@@ -153,8 +159,8 @@ or press N for displaying rent information.
 
     print("\nLoading...... Please wait a few seconds!")
     all_nearest_houses_df = get_univs_nearest_house(houses_df, location_list)
-    # calculate the nearest subway and its distance
-    nearest_houses_index = all_nearest_houses_df.iloc[uni_chosen - 1].house_indexs
+    nearest_houses_index = all_nearest_houses_df.iloc[uni_chosen - 1].house_indexs[0:50]
+
     count = 0
     print("index\tname\tprice\tstreetAddress\tpostcode\thouse_type")
     print("\nHere is information about 50 nearby houses for rent.")
