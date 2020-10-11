@@ -6,7 +6,7 @@ from house_surroundings import get_univs_nearest_house
 last_update_date = "10/11/2020"
 
 # Read every cleaned database files
-houses_file = "../data/house_merged.csv"
+houses_file = "../data/updated_data/house_merged.csv"
 houses_df = pd.read_csv(houses_file)
 
 stops_file = "../data/updated_data/substops_clean.csv"
@@ -40,7 +40,7 @@ universities = ["Cornell University", "Columbia University", "New York Universit
 
 def showDetailInfo(houseindex):
     house_info = houses_df.iloc[houseindex]
-    print("house description: ", house_info['name'])
+    print("house description: ", house_info.house_name)
     print("month price: ", house_info.price)
     print("street address: ", house_info.streetAddress)
     print("house type: ", house_info.house_type)
@@ -60,26 +60,29 @@ Enter 0 for quiting the detailed search.
         try:
             ch = int(input("\nPlease enter the choice number:\nPress 0 for quit\n"))
             if ch == 1:
-                print("The nearest subway is " + house_info.nearest_subway + " and is " +
-                      house_info.distance_from_subway + " kilometers far away.")
+                print("The nearest subway is ", house_info.nearest_subway, " and is ",
+                      house_info.distance_from_subway, " meters away.")
             elif ch == 2:
                 # print 5 Nearby restaurants
                 print("The most popular cuisine is: ", house_info.most_common_cuisine)
                 print("Number restaurant within 500m: ", house_info.num_rests_within_500m)
                 print("The 5 nearest restaurants are:\n")
                 print("name\tcuisine\tstreet\tphone")
-                for i in house_info.nearest_5rests_index:
-                    res = restaurants_df.iloc[i]
-                    print(res.name +"\t"+res.cuisine+"\t"+res.street+"\t"+res.phone)
+
+                restaurants_ls = house_info.nearest_5rests_index[1:-2].split(',')
+                for i in restaurants_ls:
+                    res = restaurants_df.iloc[int(i.strip())]
+                    print(res['name'], "\t", res.cuisine, "\t", res.street, "\t", res.phone)
 
             elif ch == 3:
                 # print 3 Nearby Theaters
                 print("The 3 nearest theaters are:\n")
                 print("name\ttel\turl\taddress\tzip")
-                for i in house_info.nearest_3theaters_index:
-                    thetr = theaters_df.iloc[i]
-                    print(thetr.THR_NAME+"\t"+thetr.THR_TEL+"\t"+thetr.THR_URL+"\t"+
-                          thetr.THR_ADDRESS+"\t"+thetr.THR_ZIP)
+                theater_ls = house_info.nearest_3theaters_index[1:-2].split(',')
+                for i in theater_ls:
+                    thetr = theaters_df.iloc[int(i.strip())]
+                    print(thetr.THR_NAME, "\t", thetr.THR_TEL, "\t", thetr.THR_URL, "\t",
+                          thetr.THR_ADDRESS, "\t", thetr.THR_ZIP)
 
             elif ch == 4:
                 # print COVID19 data in past 4 weeks
@@ -97,12 +100,14 @@ Enter 0 for quiting the detailed search.
             elif ch == 5:
                 # print Crime Report in past 5 years
                 ZCTA = house_info.ZCTA
-                crime_data = crime_df[crime_df['ZCTA'] == ZCTA].iloc[0]
-                print("The house is in Precinct No.", crime_data.PCT_ID)
-                print("Crime rate of the precinct: ", crime_data.PCT_CRIME_RATE)
-                print("Borough of the precinct: ", crime_data.PCT_BORO_NAME)
-                print("Address of the precinct: ", crime_data.PCT_ADDR)
-
+                try:
+                    crime_data = crime_df[crime_df['ZCTA'] == ZCTA].iloc[0]
+                    print("The house is in Precinct No.", crime_data.PCT_ID)
+                    print("Crime rate of the precinct: ", crime_data.PCT_CRIME_RATE)
+                    print("Borough of the precinct: ", crime_data.PCT_BORO_NAME)
+                    print("Address of the precinct: ", crime_data.PCT_ADDR)
+                except:
+                    print("No crime record near this house so far")
             elif ch == 0:
                 # quit the detailed searching
                 break
@@ -133,7 +138,7 @@ if __name__ == '__main__':
                 break
             else:
                 print("Invalid number.")
-        except():
+        except:
             pass
 
     print("\n......Now we are preparing data for you......\nWe have already updated data on " + last_update_date +
@@ -160,8 +165,8 @@ or press N for displaying rent information.
     nearest_houses_index = all_nearest_houses_df.iloc[uni_chosen - 1].house_indexs[0:50]
 
     count = 0
-    print("index\tname\tprice\tstreetAddress\tpostcode\thouse_type")
     print("\nHere is information about 50 nearby houses for rent.")
+    print("index\tname\tprice\tstreetAddress\tpostcode\thouse_type")
     for index in nearest_houses_index:
         count += 1
         info = houses_df.iloc[index]
@@ -177,7 +182,7 @@ or press N for displaying rent information.
                 showDetailInfo(house_chosen)  # row number index of house_df
             else:
                 print("Invalid number.")
-        except():
+        except:
             pass
 
     print("Thank you for using our CityMate service, if you find our service useful, please recommend it to others!:)")
