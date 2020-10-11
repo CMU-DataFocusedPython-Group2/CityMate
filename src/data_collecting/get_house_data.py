@@ -173,12 +173,10 @@ def update_house_data():
         df.loc[i] = get_house_info(house_html)
         i += 1
 
-    df.to_excel("../../data/house_info.xlsx", encoding='utf-8')
-
     # data cleaning
     new_df = pd.DataFrame(df)
     new_df = new_df.loc[new_df['name'] != "null"]
-    new_df.to_excel("../../data/clean_house_data.xlsx", encoding='utf-8')
+    new_df.to_csv("../../data/clean_house_data.csv", encoding='utf-8')
 
 
 if __name__ == "__main__":
