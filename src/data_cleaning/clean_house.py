@@ -4,7 +4,7 @@ import requests
 import numpy as np
 import pandas as pd
 from bs4 import BeautifulSoup
-from clean_covid19 import LngLat_to_ZCTP
+from clean_covid19 import LngLat_to_ZCTA
 
 
 # agent data pasted from this blog:
@@ -179,13 +179,13 @@ def update_house_data():
     new_df = pd.DataFrame(df)
     new_df = new_df.loc[new_df['name'] != "null"]
 
-    # add CZTA code
+    # add ZCTA code
     lgt = new_df['longitude']
     lat = new_df['latitude']
     l = list()
     for i in range(len(lgt)):
-        l.append(str(LngLat_to_ZCTP(lgt[i], lat[i])))
-    new_df['ZCTP'] = l
+        l.append(str(LngLat_to_ZCTA(lgt[i], lat[i])))
+    new_df['ZCTA'] = l
 
     return new_df
 
