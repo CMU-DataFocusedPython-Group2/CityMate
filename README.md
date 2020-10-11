@@ -29,19 +29,19 @@
     |    |    ├──restaurant_clean.csv
     |    |    ├──substops_clean.csv
     |    |    └──theater_clean.csv
-    |    |
     |    ├──CityMateLogo.png
     |    ├──clean_house_data.xlsx
-    |    └──sites.txt
-    |    
+    |    └──sites.txt   
     └──src
          ├──data_cleaning
+         |    ├──clean_covid19.py
          |    ├──clean_crime.py
+         |    ├──clean_house.py
          |    ├──clean_restaurant.py
          |    ├──clean_stops.py
-         |    └──clean_theater.py
-         |
-         └──data_collecting
-              ├──get_house_data.py
-              └──get_subway_stops.py
-
+         |    ├──clean_theater.py
+         |    └──update_data.py
+         ├──data_collecting
+         |    └──get_subway_stops.py
+         ├──house_surroundings.py
+         └──main.py
