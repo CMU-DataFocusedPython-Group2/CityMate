@@ -34,11 +34,10 @@ def get_distance_hav(lat0, lng0, lat1, lng1):
  
     return distance
 
-def get_house_df():
-    
-    house = pd.read_csv("../data/updated_data/house_clean.csv",header=0)
-    house.columns = ['house_id','house_name','LNG','LAT','price','streetAddress','postcode','house_type']
-    house.drop('house_id',axis = 1, inplace = True)
+def get_house_df_1():
+    house = pd.read_excel('../data/clean_house_data.xlsx')
+    house.columns = ['house_id', 'house_name', 'LNG', 'LAT', 'price', 'streetAddress', 'postcode', 'house_type']
+    house.drop('house_id', axis=1, inplace=True)
     # return a house dataframe
     return house
 
@@ -192,14 +191,14 @@ def get_subway_distance(house,stopsdf):
         for stops_row in stops.iterrows():
             hts_dis = get_distance_hav(float(house_row[1][1]),float(house_row[1][2]),float(stops_row[1][3]),float(stops_row[1][2]))
             if hts_dis < imin:
-                imin = hts.dis
+                imin = hts_dis
                 subway_name = stops_row[1][1]
         min_distance.append(imin)
         subway_names.append(subway_name)
 
     house['distance_from_subway'] = min_distance
     house['distance_from_subway'] *= 1000
-    house['subway_names'] = subway_names
+    house['nearest_subway'] = subway_names
     
     return house
 
