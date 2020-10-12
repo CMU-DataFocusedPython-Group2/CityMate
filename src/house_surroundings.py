@@ -11,6 +11,7 @@ import numpy as np
 import random
 from math import sin, asin, cos, radians, fabs, sqrt
 from collections import Counter
+import matplotlib.pyplot as plt
  
 def hav(theta):
     s = sin(theta / 2)
