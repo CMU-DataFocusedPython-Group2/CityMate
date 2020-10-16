@@ -3,6 +3,7 @@
 import numpy as np
 import pandas as pd
 import PIL.Image as image
+import matplotlib.pyplot as plt
 from wordcloud import WordCloud
 from house_surroundings import get_univs_nearest_house
 
@@ -55,13 +56,11 @@ Which of the following do you want to know more about this house?
 2. 5 Nearby Restaurants
 3. 3 Nearby Theaters
 4. COVID19 data in past 4 weeks
-5. Crime Report in past 5 years
-Enter 0 for quiting the detailed search.
-""")
+5. Crime Report in past 5 years""")
 
     while True:
         try:
-            ch = int(input("\nPlease enter the choice number:\nPress 0 for quit\n"))
+            ch = int(input("Please enter the choice number:\nPress 0 for quit\n"))
             if ch == 1:
                 print("The nearest subway is ", house_info.nearest_subway, " and is ",
                       house_info.distance_from_subway, " meters away.")
@@ -100,6 +99,16 @@ Enter 0 for quiting the detailed search.
                 print("Tested positive rate: ", covid_data.PERCENT_POSITIVE_4WEEK)
                 print("Case counts change: ", covid_data.CASE_COUNT_CHANGE_4WEEK)
 
+                # show line chart of covid19 cases in four weeks around the area.
+                covid_case_list = [int(i.strip()) for i in covid_data.CASE_COUNT_CHANGE_4WEEK[1:-1].split(',')]
+                x = np.array([1, 2, 3, 4])
+                y = np.array(covid_case_list)
+                plt.plot(x, y, color='red', linewidth=3.0)
+                plt.xlabel('Week')
+                plt.ylabel('Num of New Cases')
+                plt.title('Covid-19 Cases In Four Weeks Around the House')
+                plt.show()
+
             elif ch == 5:
                 # print Crime Report in past 5 years
                 ZCTA = house_info.ZCTA
@@ -120,6 +129,7 @@ Enter 0 for quiting the detailed search.
         except():
             print("Invalid number.")
 
+
 # show the word cloud of all
 def show_wordcloud(restaurant_df):
     # extract all types of restaurant speciaty into cuisine_list
@@ -136,9 +146,9 @@ def show_wordcloud(restaurant_df):
     cuisine_dict = dict()
     for i in cuisine_list:
         if i in cuisine_dict:
-            cuisine_dict[i]+=1
+            cuisine_dict[i] += 1
         else:
-            cuisine_dict[i]=1
+            cuisine_dict[i] = 1
 
     cuisine_dict = {k: v for k, v in sorted(cuisine_dict.items(), key=lambda item: item[1], reverse=True)}
 
@@ -209,6 +219,7 @@ or press N for displaying rent information.
               "\t" + str(info.postcode) + "\t" + str(info.house_type))
 
     # Show the word cloud of all the restaurant in descending order.
+    print("\nGenerating word cloud, please wait...")
     show_wordcloud(restaurants_df)
 
     while True:
@@ -219,7 +230,7 @@ or press N for displaying rent information.
             if 1 <= ch <= 50:
                 house_chosen = nearest_houses_index[ch - 1]
                 showDetailInfo(house_chosen)  # row number index of house_df
-            elif ch==0:
+            elif ch == 0:
                 break
             else:
                 print("Invalid number.")
