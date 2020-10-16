@@ -41,7 +41,5 @@
          |    ├──clean_stops.py
          |    ├──clean_theater.py
          |    └──update_data.py
-         ├──data_collecting
-         |    └──get_subway_stops.py
          ├──house_surroundings.py
          └──main.py
