@@ -1,3 +1,5 @@
+import sys,os
+sys.path.append(os.getcwd()[:-13])
 from clean_crime import GET_CRIME_RAW, CLEAN_CRIMEDATA
 from clean_stops import GET_STOPS_RAW, CLEAN_STOPSDATA
 from clean_theater import GET_THEATER_DF
@@ -36,6 +38,7 @@ def UPDATE_DATA():
 
 def UPDATE_HOUSE_DATA():
     # updata house data
+    print("Collecting house data... This may take half a day...")
     HOUSE_DF = update_house_data()
     HOUSE_DF.to_csv('../../data/updated_data/house_clean.csv', index=False)
     return
@@ -56,9 +59,9 @@ def GET_HOUSE_DF():
     houses_df = get_surrounding_restaurants(houses_df, rest_df)
     houses_df = get_subway_distance(houses_df, stops_df)
 
-    return houses_df
+    houses_df.to_csv('../../data/updated_data/house_merged.csv', index=False)
+    return
 
 if __name__ == "__main__":
-    house = GET_HOUSE_DF()
-    house.to_csv('../../data/updated_data/house_merged.csv', index=False)
-    print(house)
+    UPDATE_DATA()
+    GET_HOUSE_DF()
