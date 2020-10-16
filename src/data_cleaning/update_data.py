@@ -36,8 +36,8 @@ def UPDATE_DATA():
 
 def UPDATE_HOUSE_DATA():
     # updata house data
-    #HOUSE_DF = update_house_data()
-    #HOUSE_DF.to_csv('../../data/updated_data/house_clean.csv', index=False)
+    HOUSE_DF = update_house_data()
+    HOUSE_DF.to_csv('../../data/updated_data/house_clean.csv', index=False)
     return
 
 def GET_HOUSE_DF():
