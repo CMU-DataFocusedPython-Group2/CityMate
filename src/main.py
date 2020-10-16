@@ -1,6 +1,9 @@
 # this is the main program file
 
+import numpy as np
 import pandas as pd
+import PIL.Image as image
+from wordcloud import WordCloud
 from house_surroundings import get_univs_nearest_house
 
 last_update_date = "10/11/2020"
@@ -117,6 +120,38 @@ Enter 0 for quiting the detailed search.
         except():
             print("Invalid number.")
 
+# show the word cloud of all
+def show_wordcloud(restaurant_df):
+    # extract all types of restaurant speciaty into cuisine_list
+    cuisine_raw = list()
+    for rest_row in restaurant_df.iterrows():
+        split_cuisines = (rest_row[1]['cuisine']).split(';')
+        for sc in split_cuisines:
+            cuisine_raw.append(sc)
+    # transform all string into lower case
+    cuisine_list = list()
+    for i in cuisine_raw:
+        cuisine_list.append(i.lower().strip())
+    # count word frequency
+    cuisine_dict = dict()
+    for i in cuisine_list:
+        if i in cuisine_dict:
+            cuisine_dict[i]+=1
+        else:
+            cuisine_dict[i]=1
+
+    cuisine_dict = {k: v for k, v in sorted(cuisine_dict.items(), key=lambda item: item[1], reverse=True)}
+
+    text = ""
+    for i in cuisine_dict.keys():
+        text += str(i) + ' '
+
+    # America map is downloaded from google
+    mask = np.array(image.open("../data/America.jpg"))
+    wordcloud = WordCloud(mask=mask, background_color='white').generate_from_text(text)
+    image_produce = wordcloud.to_image()
+    image_produce.show()
+
 
 if __name__ == '__main__':
 
@@ -172,6 +207,9 @@ or press N for displaying rent information.
         info = houses_df.iloc[index]
         print(str(count) + "\t" + str(info.name) + "\t" + str(info.price) + "\t" + str(info.streetAddress) +
               "\t" + str(info.postcode) + "\t" + str(info.house_type))
+
+    # Show the word cloud of all the restaurant in descending order.
+    show_wordcloud(restaurants_df)
 
     while True:
         try:
