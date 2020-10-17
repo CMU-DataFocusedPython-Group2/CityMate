@@ -1,11 +1,12 @@
-#!/usr/bin/env python
-# coding: utf-8
 
-# In[24]:
+# Author: Jingwen Ma, Yixuan Guo, Yue Jia, Yunxuan Yu, Zixin Yin
+# Date: Oct-11, 2020
 
-
-# house surrounding information, include 6 functions:
+# This file's name is "house_surroundings.py". 
+# It imports pandas, numpy, random, math, collections and matplotlib. It will be imported by the "main.py". 
+# This file processes the house surrounding information and includes 6 functions:
 # hav(),get_distance_hav(),get_house_df(),get_univs_nearest_house(),get_nearest_3cinemas(),get_surrounding_restaurants
+
 import pandas as pd
 import numpy as np
 import random
@@ -13,10 +14,12 @@ from math import sin, asin, cos, radians, fabs, sqrt
 from collections import Counter
 import matplotlib.pyplot as plt
  
+# A math function to help to calculate the distance by longitude and latitude. The function is called by get_distance_hav() function.
 def hav(theta):
     s = sin(theta / 2)
     return s * s
- 
+  
+# Calculate the distance by longitude and latitude. This function calls the hav() function. Its return unit is kilometre.
 def get_distance_hav(lat0, lng0, lat1, lng1):
     
     # The distance between two points on the sphere is calculated by haverne formula.
@@ -35,13 +38,15 @@ def get_distance_hav(lat0, lng0, lat1, lng1):
  
     return distance
 
+# Read the "clean_house_data.xlsx" and create its dataframe
 def get_house_df_1():
     house = pd.read_excel('../../data/clean_house_data.xlsx')
     house.columns = ['house_id', 'house_name', 'LNG', 'LAT', 'price', 'streetAddress', 'postcode', 'house_type', 'ZCTA']
     house.drop('house_id', axis=1, inplace=True)
     # return a house dataframe
     return house
-
+   
+# Get the 50 nearest houses by the chosen university and show the monthly rates distribution of these house by their distance from universities
 def get_univs_nearest_house(house,univs_location,univ_chosen):  
     univs_house_dis = []
     houses_dis_price = []
@@ -49,8 +54,10 @@ def get_univs_nearest_house(house,univs_location,univ_chosen):
         univ_house_dis = []
         house_dis_price = []
         for house_row in house.iterrows():
-            dis = get_distance_hav(float(house_row[1]['LNG']),float(house_row[1]['LAT']),float(univ[0]),float(univ[1]))+ 0.001 * random.random()
+            # some houses have same lng and lat, we use a little random to manually distinguish them
+            dis = get_distance_hav(float(house_row[1]['LNG']),float(house_row[1]['LAT']),float(univ[0]),float(univ[1]))+ 0.001 * random.random() 
             univ_house_dis.append(dis)
+            # process the price from string to int
             prc = house_row[1]['price'][1:]
             if ',' in prc:
                 prc = int(prc[0])*1000 + int(prc[2:])
@@ -59,6 +66,8 @@ def get_univs_nearest_house(house,univs_location,univ_chosen):
             else:
                 prc = int(prc)
             house_dis_price.append(prc)
+            
+        # get the 50 nearest houses    
         d = dict(zip(univ_house_dis,range(len(univ_house_dis))))
         hp = dict(zip(univ_house_dis,house_dis_price))
         univ_house_dis.sort()        
@@ -71,20 +80,21 @@ def get_univs_nearest_house(house,univs_location,univ_chosen):
         univs_house_dis.append(a) 
         houses_dis_price.append(b)
         
+    # insert the 50 nearest houses' index to the university dataframe  
     univs = pd.DataFrame(np.array(univs_location),columns = ['LNG','LAT'])
     univs['house_indexs'] = univs_house_dis
     
-    # show a distribution plot of the chosen univ's surrounding houses' rates
+    # show a distribution plot of the chosen univ's surrounding houses' monthly rates and distances
     plt.hist(x = houses_dis_price[univ_chosen-1], bins = 20, color = 'steelblue', edgecolor = 'black')
-    plt.xlabel('Dollars')
+    plt.xlabel('Houses Monthly Rates')
     plt.ylabel('Num of Houses')
-    plt.title('Month Rates Distribution of Houses')
+    plt.title('Rates Distribution by Distance from Houses to Univ')
     plt.show()
        
-    return univs  # return a univs dataframe
+    return univs  # return the univs dataframe
 
-def get_nearest_3cinemas(house,cinema):
-    # calculate the nearest 3 cinemas for each house
+# calculate the nearest 3 cinemas for each house
+def get_nearest_3cinemas(house,cinema):    
     nearest3cinemas = []
     cinema['index'] = [i for i in range(len(cinema))]
     
@@ -103,30 +113,28 @@ def get_nearest_3cinemas(house,cinema):
                 first_nearest = dis
                 nearest_index[2] = nearest_index[1]
                 nearest_index[1] = nearest_index[0] 
-                nearest_index[0] = cinema_row[1][7]   #index column num
+                nearest_index[0] = cinema_row[1]['index']   
             if dis > first_nearest and dis < second_nearest: 
                 third_nearest = second_nearest
                 second_nearest = dis
                 nearest_index[2] = nearest_index[1]
-                nearest_index[1] = cinema_row[1][7]   #index column num
+                nearest_index[1] = cinema_row[1]['index']  
             if dis > second_nearest and dis < third_nearest: 
                 third_nearest = dis
-                nearest_index[2] = cinema_row[1][7]   #index column num
+                nearest_index[2] = cinema_row[1]['index'] 
         nearest3cinemas.append(nearest_index)
         
     house['nearest_3theaters_index'] = nearest3cinemas # insert the nearest3cinemas column
 
     return house    # return input house's dataframe after inserting a 'nearest_3theaters_index column'
 
-
+# calculate the nearest 5 restaurants,restaurants number within 500m and the most common cuisine within 500m for each house
 def get_surrounding_restaurants(house,rest):
-    
-    # calculate the nearest 5 restaurants,restaurants number within 500m and the most common cuisine within 500m for each house
+ 
     rest['index'] = [i for i in range(len(rest))]
-
     common_cuisines = []          # store common cuisines for each house
-    num_rests_within_500m = []
-    nearest5rests = []
+    num_rests_within_500m = []    # store number of restaurant within 500m for each house
+    nearest5rests = []            # store nearest 5 houses' index for each house
     
     for house_row in house.iterrows():
         cuisines = []# store each row's cuisines
@@ -139,7 +147,7 @@ def get_surrounding_restaurants(house,rest):
         for rest_row in rest.iterrows():
             dis = get_distance_hav(float(house_row[1]['LNG']),float(house_row[1]['LAT']),float(rest_row[1]['Lng']),float(rest_row[1]['Lat']))*1000
             if dis <= 500:
-                split_cuisines = (rest_row[1][3]).split(';')
+                split_cuisines = (rest_row[1]['cuisine']).split(';')
                 for sc in split_cuisines:
                     cuisines.append(sc)
 
@@ -154,7 +162,7 @@ def get_surrounding_restaurants(house,rest):
                 nearest_index[3] = nearest_index[2]
                 nearest_index[2] = nearest_index[1]
                 nearest_index[1] = nearest_index[0]
-                nearest_index[0] = rest_row[1][6]#index column num
+                nearest_index[0] = rest_row[1]['index']
             if dis > first_nearest and dis < second_nearest:             
                 fifth_nearest = fourth_nearest
                 fourth_nearest = third_nearest
@@ -163,22 +171,22 @@ def get_surrounding_restaurants(house,rest):
                 nearest_index[4] = nearest_index[3]
                 nearest_index[3] = nearest_index[2]
                 nearest_index[2] = nearest_index[1]
-                nearest_index[1] = rest_row[1][6]#index column num
+                nearest_index[1] = rest_row[1]['index']
             if dis > second_nearest and dis < third_nearest: 
                 fifth_nearest = fourth_nearest
                 fourth_nearest = third_nearest
                 third_nearest = dis
                 nearest_index[4] = nearest_index[3]
                 nearest_index[3] = nearest_index[2]
-                nearest_index[2] = rest_row[1][6]#index column num
+                nearest_index[2] = rest_row[1]['index']
             if dis > second_nearest and dis < third_nearest: 
                 fifth_nearest = fourth_nearest
                 fourth_nearest = dis
                 nearest_index[4] = nearest_index[3]
-                nearest_index[3] = rest_row[1][6]#index column num
+                nearest_index[3] = rest_row[1]['index']
             if dis > second_nearest and dis < third_nearest: 
                 fifth_nearest = dis
-                nearest_index[4] = rest_row[1][6]#index column num
+                nearest_index[4] = rest_row[1]['index']
             
         common_cuisines.append(Counter(cuisines).most_common(1))
         num_rests_within_500m.append(len(cuisines))
@@ -197,7 +205,7 @@ def get_surrounding_restaurants(house,rest):
     
     return house
 
-
+# get the nearest subway for the house, including the distance and the subway station's name
 def get_subway_distance(house,stops):
     min_distance = []
     subway_names = []

@@ -1,3 +1,9 @@
+# Author: Jingwen Ma, Yixuan Guo, Yue Jia, Yunxuan Yu, Zixin Yin
+# Date: Oct-10, 2020
+
+#This file's name is "clean_restaurant.py". It will clean the restaurant_raw.
+
+#Import pandas
 import pandas as pd
 
 def GET_RESTAURANT_DF():

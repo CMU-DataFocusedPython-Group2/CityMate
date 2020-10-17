@@ -1,3 +1,8 @@
+# Author: Jingwen Ma, Yixuan Guo, Yue Jia, Yunxuan Yu, Zixin Yin
+# Date: Oct-10, 2020
+
+# This file's name is "clean_house.py". It imports json, time, requests, numpy, pandas, bs4 and clean_covid19
+# It will scrape the house information from web resources and clean it 
 import json
 import time
 import requests

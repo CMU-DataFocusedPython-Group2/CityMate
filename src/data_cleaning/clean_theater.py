@@ -1,3 +1,8 @@
+# Author: Jingwen Ma, Yixuan Guo, Yue Jia, Yunxuan Yu, Zixin Yin
+# Date: Oct-10, 2020
+
+# This file's name is "clean_theater.py", it will download the cinema information from web resources and clean it.
+# It imports requests and pandas
 import requests
 import pandas as pd
 

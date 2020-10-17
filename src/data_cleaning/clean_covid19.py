@@ -1,5 +1,9 @@
+# Author: Jingwen Ma, Yixuan Guo, Yue Jia, Yunxuan Yu, Zixin Yin
+# Date: Oct-11, 2020
+
 # pip install sodapy
 # pip install shapely
+# This file's name is "clean_covid19.py". It will be importd by "clean_house.py"
 # if you are python 3.8, you may need to copy the geo_c dlls into library\bin
 import pandas as pd
 import requests,io
