@@ -11,6 +11,7 @@ from house_surroundings import *
 
 def UPDATE_DATA():
     # update crime data
+    print("")
     print("Updating crime data...")
     GET_CRIME_RAW()
     CRIME_DF = CLEAN_CRIMEDATA()
@@ -82,5 +83,6 @@ def GET_HOUSE_DF():
 
 
 if __name__ == "__main__":
+    print("Please wait a few minutes here...")
     UPDATE_DATA()
     GET_HOUSE_DF()
