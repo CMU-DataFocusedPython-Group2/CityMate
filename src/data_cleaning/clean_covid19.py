@@ -1,3 +1,6 @@
+# Author: Jingwen Ma, Yixuan Guo, Yue Jia, Yunxuan Yu, Zixin Yin
+# Date: Oct-11, 2020
+
 # pip install sodapy
 # pip install shapely
 # if you are python 3.8, you may need to copy the geo_c dlls into library\bin
