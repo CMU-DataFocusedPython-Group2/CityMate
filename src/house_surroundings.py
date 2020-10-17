@@ -74,11 +74,11 @@ def get_univs_nearest_house(house,univs_location,univ_chosen):
     univs = pd.DataFrame(np.array(univs_location),columns = ['LNG','LAT'])
     univs['house_indexs'] = univs_house_dis
     
-    # show a distribution plot of the chosen univ's surrounding houses' rates and distances
+    # show a distribution plot of the chosen univ's surrounding houses' rates
     plt.hist(x = houses_dis_price[univ_chosen-1], bins = 20, color = 'steelblue', edgecolor = 'black')
-    plt.xlabel('Houses Monthly Rates')
+    plt.xlabel('Dollars')
     plt.ylabel('Num of Houses')
-    plt.title('Rates Distribution by Distance from Houses to Univ')
+    plt.title('Month Rates Distribution of Houses')
     plt.show()
        
     return univs  # return a univs dataframe
