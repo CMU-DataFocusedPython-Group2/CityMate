@@ -233,7 +233,7 @@ or press N for displaying rent information.
     while True:
         try:
             ch = int(input("\nWhich house do you want to know more about?\n" +
-                           "Please enter the index number for more information:\n"
+                           "Please enter the index number(1-50) for more information:\n"
                            "Enter 0 to exit\n"))
             if 1 <= ch <= 50:
                 house_chosen = nearest_houses_index[ch - 1]
