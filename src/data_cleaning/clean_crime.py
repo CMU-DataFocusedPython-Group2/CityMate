@@ -1,7 +1,7 @@
 # Author: Jingwen Ma, Yixuan Guo, Yue Jia, Yunxuan Yu, Zixin Yin
 # Date: Oct-10, 2020
 
-# Import requests, pandas, sodapy, shapely, bs4
+# This file's name is "clean_covid19.py".
 # This file's function is to get crime data from web resources through API and web scraping, and clean it
 import requests
 import pandas as pd

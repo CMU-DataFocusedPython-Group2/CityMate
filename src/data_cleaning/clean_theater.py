@@ -1,3 +1,8 @@
+# Author: Jingwen Ma, Yixuan Guo, Yue Jia, Yunxuan Yu, Zixin Yin
+# Date: Oct-10, 2020
+
+# This file's function is to get crime data from web resources through API and web scraping, and clean it
+
 import requests
 import pandas as pd
 

@@ -40,7 +40,6 @@ def LngLat_to_ZCTA(Lng,Lat):
 
 
 # GET COVID_DATA
-# GET COVID_DATA
 def GET_COVID19_DF():
     url= "https://raw.githubusercontent.com/nychealth/coronavirus-data/master/recent/recent-4-week-by-modzcta.csv"
     s= requests.get(url).content
