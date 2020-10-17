@@ -1,4 +1,11 @@
-# this is the main program file
+# author: Jingwen Ma, Yixuan Guo, Yue Jia, Yunxuan Yu, Zixin Yin
+# Date: Oct-17, 2020
+
+# This is the main program file, which imports numpy, pandas, PIL.Image, matplotlib.pyplot, wordcloud and house_surroundings
+# It will fitst show you 15 universities and ask you to choose one of them. 
+# After you enter the choice, 50 houses near the univesities will be shown.
+# Chooce a single number(1-50) of the house you are interested in, 
+# You will have a menu(enter 1-5 to choose, 0 to quit) of the house's surrounding information.
 
 import numpy as np
 import pandas as pd
@@ -49,7 +56,8 @@ def showDetailInfo(houseindex):
     print("street address: ", house_info.streetAddress)
     print("house type: ", house_info.house_type)
     print("postcode: ", house_info.postcode)
-
+    
+    # show the detail surrounding information menu
     print("""
 Which of the following do you want to know more about this house?
 1. Distance from nearest subway
@@ -130,7 +138,7 @@ Which of the following do you want to know more about this house?
             print("Invalid number.")
 
 
-# show the word cloud of all
+# show the word cloud of all restaurants' cuisines
 def show_wordcloud(restaurant_df):
     # extract all types of restaurant speciaty into cuisine_list
     cuisine_raw = list()
