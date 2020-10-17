@@ -1,3 +1,8 @@
+# Author: Jingwen Ma, Yixuan Guo, Yue Jia, Yunxuan Yu, Zixin Yin
+# Date: Oct-10, 2020
+
+# Import requests, pandas, sodapy, shapely, bs4
+# This file's function is to scribe the crime information from web resources
 import requests
 import pandas as pd
 from sodapy import Socrata
