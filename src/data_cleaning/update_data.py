@@ -1,5 +1,4 @@
 import sys, os
-
 sys.path.append(os.getcwd()[:-13])
 from clean_crime import GET_CRIME_RAW, CLEAN_CRIMEDATA
 from clean_stops import GET_STOPS_RAW, CLEAN_STOPSDATA
