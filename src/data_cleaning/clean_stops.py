@@ -1,7 +1,8 @@
-#!/usr/bin/env python
-# coding: utf-8
+# Author: Jingwen Ma, Yixuan Guo, Yue Jia, Yunxuan Yu, Zixin Yin
+# Date: Oct-10, 2020
 
-# In[ ]:
+#This file's name is "clean_stops.py", it will download the subways sations data from the web resources directly
+# It imports requests,zipfile,ip,numpy and pandas
 
 import requests, zipfile, io
 import numpy as np
