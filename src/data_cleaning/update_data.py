@@ -1,3 +1,12 @@
+# Author: Jingwen Ma, Yixuan Guo, Yue Jia, Yunxuan Yu, Zixin Yin
+# Date: Oct-11, 2020
+
+# imports sys,os
+# Also import all the clean_xxx modules in the same folder and
+# import house_surroundings from the parent folder
+
+# This file's function is to update all the data sources at one time, and save this time for main.py
+# All the updated and cleaned data then are exported to the folder of "CityMate/data/updated_data/"
 import sys, os
 sys.path.append(os.getcwd()[:-13])
 from clean_crime import GET_CRIME_RAW, CLEAN_CRIMEDATA

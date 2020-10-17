@@ -2,7 +2,7 @@
 # Date: Oct-10, 2020
 
 # Import requests, pandas, sodapy, shapely, bs4
-# This file's function is to scribe the crime information from web resources
+# This file's function is to get crime data from web resources through API and web scraping, and clean it
 import requests
 import pandas as pd
 from sodapy import Socrata
