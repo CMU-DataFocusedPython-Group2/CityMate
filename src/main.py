@@ -68,27 +68,27 @@ Which of the following do you want to know more about this house?
 
     while True:
         try:
-            ch = int(input("Please enter the choice number:\nPress 0 for quit\n"))
+            ch = int(input("\nPlease enter the choice number(1-5):\nPress 0 for quit\n"))
             if ch == 1:
-                print("The nearest subway is ", house_info.nearest_subway, " and is ",
-                      house_info.distance_from_subway, " meters away.")
+                print("\nThe nearest subway is ", house_info.nearest_subway, " and is ",
+                      int(house_info.distance_from_subway), " meters away.")
             elif ch == 2:
                 # print 5 Nearby restaurants
-                print("The most popular cuisine is: ", house_info.most_common_cuisine)
+                print("\nThe most popular cuisine is: ", house_info.most_common_cuisine)
                 print("Number restaurant within 500m: ", house_info.num_rests_within_500m)
                 print("The 5 nearest restaurants are:\n")
                 print("name\tcuisine\tstreet\tphone")
 
-                restaurants_ls = house_info.nearest_5rests_index[1:-2].split(',')
+                restaurants_ls = house_info.nearest_5rests_index[1:-1].split(',')
                 for i in restaurants_ls:
                     res = restaurants_df.iloc[int(i.strip())]
                     print(res['name'], "\t", res.cuisine, "\t", res.street, "\t", res.phone)
 
             elif ch == 3:
                 # print 3 Nearby Theaters
-                print("The 3 nearest theaters are:\n")
+                print("\nThe 3 nearest theaters are:\n")
                 print("name\ttel\turl\taddress\tzip")
-                theater_ls = house_info.nearest_3theaters_index[1:-2].split(',')
+                theater_ls = house_info.nearest_3theaters_index[1:-1].split(',')
                 for i in theater_ls:
                     thetr = theaters_df.iloc[int(i.strip())]
                     print(thetr.THR_NAME, "\t", thetr.THR_TEL, "\t", thetr.THR_URL, "\t",
@@ -98,7 +98,7 @@ Which of the following do you want to know more about this house?
                 # print COVID19 data in past 4 weeks
                 ZCTA = house_info.ZCTA
                 covid_data = covid19_df[covid19_df['ZCTA'] == ZCTA].iloc[0]
-                print("In the past four weeks, the COVID 19 data of here\n" + covid_data.NEIGHBORHOOD_NAME + "is: ")
+                print("\nIn the past four weeks, the COVID 19 data of here\n" + covid_data.NEIGHBORHOOD_NAME + "is: ")
                 print("Total case count: ", covid_data.COVID_CASE_COUNT_4WEEK)
                 print("Total case rate: ", covid_data.COVID_CASE_RATE_4WEEK)
                 print("Total death count: ", covid_data.COVID_DEATH_COUNT_4WEEK)
@@ -122,7 +122,7 @@ Which of the following do you want to know more about this house?
                 ZCTA = house_info.ZCTA
                 try:
                     crime_data = crime_df[crime_df['ZCTA'] == ZCTA].iloc[0]
-                    print("The house is in Precinct No.", crime_data.PCT_ID)
+                    print("\nThe house is in Precinct No.", crime_data.PCT_ID)
                     print("Crime rate of the precinct: ", crime_data.PCT_CRIME_RATE)
                     print("Borough of the precinct: ", crime_data.PCT_BORO_NAME)
                     print("Address of the precinct: ", crime_data.PCT_ADDR)
@@ -184,9 +184,9 @@ if __name__ == '__main__':
 
     while True:
         try:
-            uni = int(input("\nPlease enter the choice number of the university: "))
+            uni = int(input("\nPlease enter the choice number(1-15) of the university: \n"))
             if 1 <= uni <= 15:
-                print("You would like to rent near " + universities[uni - 1])
+                print("You would like to rent a house near " + universities[uni - 1])
                 uni_chosen = uni
                 break
             else:
@@ -233,7 +233,7 @@ or press N for displaying rent information.
     while True:
         try:
             ch = int(input("\nWhich house do you want to know more about?\n" +
-                           "Please enter the index number for more information:\n"
+                           "Please enter the index number(1-50) for more information:\n"
                            "Enter 0 to exit\n"))
             if 1 <= ch <= 50:
                 house_chosen = nearest_houses_index[ch - 1]
