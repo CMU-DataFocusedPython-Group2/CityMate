@@ -71,7 +71,7 @@ Which of the following do you want to know more about this house?
             ch = int(input("\nPlease enter the choice number(1-5):\nPress 0 for quit\n"))
             if ch == 1:
                 print("\nThe nearest subway is ", house_info.nearest_subway, " and is ",
-                      house_info.distance_from_subway, " meters away.")
+                      int(house_info.distance_from_subway), " meters away.")
             elif ch == 2:
                 # print 5 Nearby restaurants
                 print("\nThe most popular cuisine is: ", house_info.most_common_cuisine)
@@ -184,7 +184,7 @@ if __name__ == '__main__':
 
     while True:
         try:
-            uni = int(input("\nPlease enter the choice number(1-15) of the university: "))
+            uni = int(input("\nPlease enter the choice number(1-15) of the university: \n"))
             if 1 <= uni <= 15:
                 print("You would like to rent a house near " + universities[uni - 1])
                 uni_chosen = uni
